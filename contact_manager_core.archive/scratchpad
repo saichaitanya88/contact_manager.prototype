@@ -1,0 +1,86 @@
+// appCore.AuthenticateUser(req.header("authorization"), function(err, user){
+	// 	console.log(user);
+	// 	if (err || !user) { res.send("<h1>NOT Authenticated</h1>", 401); }
+	// 	else
+	// 		res.send("<h1>NOT IMPLEMENTED</h1>GET top 10 items from every collection that is in the application's database",500);
+	// });
+
+	
+/*
+app.get('/application/:object', function(req, res){
+	console.log("GET /application/" + req.params["object"])
+	// var response = "GET top 10 items from the collection named '" + req.params["object"] + "'";
+	// response = response + "<br/> query - " + JSON.stringify(req.query);
+	// response = response + "<br/> keys - " + JSON.stringify(Object.keys(req.query));
+	//console.log(JSON.stringify(req.query))
+	//cache the database connection object to improve speed. 
+	MongoClient.connect('mongodb://localhost:27017/weather', function(err, db) {
+	    if(err) //throw err;
+				res.send("Error connecting to Database",500);
+
+	    db.collection(req.params["object"]).find(req.query).toArray(function(err, doc) {
+	        if(err) // throw err;
+	        	res.send("error retrieving items",500);
+
+	        // if (!doc) {
+	        //     console.dir("No document found");
+	        //     res.send(JSON.stringify(doc),200);
+	        //     //return db.close();
+	        // }
+	        
+	        //var posts = db.collection("posts");
+					res.send(JSON.stringify(doc),200);
+	        return db.close();
+	    });
+	});
+});
+
+app.get('/application/:object/:id', function(req, res){
+		// var response = "GET complete JSON details of the '" + req.params["object"] + "'";
+		// response = response + "<br/> id - " + req.params["id"];
+		// res.status(200).send(response);
+	MongoClient.connect('mongodb://localhost:27017/school', function(err, db) {
+    if(err) //throw err;
+			res.send("Error connecting to Database",500);
+
+    db.collection(req.params["object"]).find({ "_id" : parseInt(req.params["id"])}).toArray(function(err, doc) {
+        if(err) // throw err;
+        	res.send("error retrieving items",500);
+				res.send(JSON.stringify(doc),200);
+        return db.close();
+    });
+	});
+});
+
+app.delete('/application/:object/:id', function(req, res){
+		var response = "DELETE '" + req.params["object"] + "'";
+		response = response + "<br/> id - " + req.params["id"];
+		res.status(204).send(response);
+});
+
+app.put('/application/:object/:id/edit', function(req, res){
+		var response = "Edit '" + req.params["object"] + "'";
+		response = response + "<br/> id - " + req.params["id"];
+		response = response + "<br/> paramters updated - IMPLEMENT PARAMETERS LIST";
+		res.status(200).send(response);
+});
+
+app.post('/application/:object/create', function(req, res){
+		var response = "Create '" + req.params["object"] + "'";
+		response = response + "<br/> id - " + req.params["id"];
+		response = response + "<br/> paramters updated - IMPLEMENT PARAMETERS LIST";
+		res.status(201).send(response);
+});
+
+app.all('*', function(req, res){
+		console.log(res)
+    res.status(404).send('Unable to process request');
+});
+*/
+
+
+// app.set('views', __dirname + '/views');
+
+// app.get('/', function(req, res){
+//     res.redirect('/application/:user_name'+req.url);
+// });
