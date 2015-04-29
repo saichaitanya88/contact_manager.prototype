@@ -1,41 +1,18 @@
-var MC = function Connector(){
-	this.LoadValidation = function LoadValidation(){
-		var ValidateName = function ValidateName(){
-			if (model.name ===  undefined) 
-				errors.name = "name is not available";
-		};
-		var ValidateHp = function ValidateHp(){
-			if (model.hp === undefined) 
-				errors.hp = "hp is not available";
-		};
-		var ValidateMethods = new Array();
-		ValidateMethods.push(ValidateName);
-		ValidateMethods.push(ValidateHp);
-		this.Validate = function Validate(car){
-			model = car;
-			errors = new Object();
-			for(var method in ValidateMethods)
-			{
-				ValidateMethods[method]();
-			}
-			return errors;
-		}
-	}
-}
+var wait = require('wait.for');
 
-var CarMetaData = function CarMetaData1(){
-	this.CarSchema = mongoose.Schema({
-		name: String,
-		hp : Number
-	});	
-	this.Validate = new MC().LoadValidation;
-}
+function anyStandardAsync(param, callback){
+    setTimeout( function(){
+                  callback(null,'hi '+param);
+        }, 5000);
+};
 
-var carMetaData = new CarMetaData();
-var car = mongoose.Document({ }, carMetaData.CarSchema);
-function ValidateName(model, errors){if (model.name ===  undefined) errors.name = "name is not available"; };
-var vn = ValidateName.toString();
-eval(vn);
-var errs = new Object();
-var tmpFunc = new Function("ValidateName(car, errs)");
-tmpFunc();
+function  testFunction(){
+    console.log('fiber start');
+    var result = wait.for(anyStandardAsync,'test');
+    console.log('function returned:', result);
+    console.log('fiber end');
+};
+
+console.log('app start');
+wait.launchFiber(testFunction);
+console.log('after launch');
