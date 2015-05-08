@@ -1,35 +1,28 @@
 var UserDataAccess = require ('../dao/users').UserDataAccess;
 var UserCore = require('../core/users').UserCore;
+var Logger = require('../utilities/logger').Logger;
+var ApplicationModes = require("../utilities/config").ApplicationModes;
+var logger = new Logger();
+var appModes = new ApplicationModes();
 
-//var UserValidation = require ('../core/users/validation').UserValidation;
 function UsersHandler () {
-  console.log("IMPLEMENT OAUTH FIRST");
+  "use strict";
+  logger.log("IMPLEMENT OAUTH FIRST", appModes.DEBUG);
   var userDao = new UserDataAccess();
-  //"use strict";
-  //var users_dao = new UsersDAO();
-  this.GetUser = function GetUser(req, res){
+  this.GetUserByToken = function GetUser(req, res){
     res.send("not implemented");
   };
-  this.UserSignIn = function UserSignIn(req, res){
-    res.send("not implemented - responds with token");
+  this.AuthenticateUser = function UserSignIn(req, res){
+    var userCore = new UserCore(req, res);
+    userCore.BeginAuthenticateUserRequest();
   };
   this.CreateUser = function CreateUser(req, res){
     var userCore = new UserCore(req, res);
     userCore.BeginCreateUserRequest();
-    // var user = new UserModel(req.body);
-    // if (user.getErrors() == undefined){
-    //   userDao.CreateUser(user, req, res);
-    //   //res.send(JSON.stringify(user), 201);
-    // }
-    // else
-    //   res.send(JSON.stringify(user), 400);
   };
   this.CreateUserSession = function CreateUser(req, res){
     res.send("not implemented");
   };
 }
-
-
-
 
 module.exports.UsersHandler = UsersHandler;

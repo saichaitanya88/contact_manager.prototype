@@ -1,5 +1,11 @@
 var ObjectId = require('mongodb').ObjectId;
 var UserDataAccess = require ('../dao/users').UserDataAccess;
+var async = require('async');
+var Logger = require('../utilities/logger').Logger;
+var ApplicationModes = require("../utilities/config").ApplicationModes;
+var logger = new Logger();
+var appModes = new ApplicationModes();
+
 
 function UserModel(params, callback) {
   "use strict";
@@ -81,9 +87,11 @@ function UserModel(params, callback) {
 
   function setParameterValue(key, params, prop_defs_struct, props, errors){
     if (prop_defs_struct[key].__type == "ObjectId"){
-      if (params[key] === undefined){
-        if (ObjectId.isValid(params[key]))
-          props[key] = new ObjectId(params[key]);
+      if(ObjectId.isValid(params[key].toString())){
+        props[key] = new ObjectId(params[key].toString());
+      }
+      else{ 
+        props[key] = null;
       }
     }
     else if (prop_defs_struct[key].__type == "String"){
@@ -98,7 +106,7 @@ function UserModel(params, callback) {
           props[key] = new Date(params[key]);
       }
     }
-  }
+  };
 
   this.getModel = getModel;
   function getModel(){
@@ -127,8 +135,8 @@ function UserModel(params, callback) {
     if (key == "_id"){
       if (params[key] === undefined)
         props[key] = new ObjectId();
-      else if(ObjectId.isValid(params[key]))
-        props[key] = new ObjectId(params[key]);
+      else if(ObjectId.isValid(params[key].toString()))
+        props[key] = new ObjectId(params[key].toString());
       else 
         props[key] = null;
     }
@@ -220,29 +228,47 @@ function UserModel(params, callback) {
   }
 
   function validateEmailUniqueness(callback){
+    logger.log("UserModel.validateEmailUniqueness", appModes.DEBUG)
     var userDao = new UserDataAccess();
     userDao.GetUserByEmail(model.email, function(err, result){
+      logger.log("UserModel.validateEmailUniqueness.userDAO.GetUserByEmail", appModes.DEBUG)
       if (result){
         if (errors.email === undefined)
           errors.email = new Array();
         errors.email.push("Email must be unique"); 
       }
-      callback(null,toJSON());
+      callback(null);
     });
   }
 
-  function validateModel(callback){
-    validateFirstName();
-    validateLastName();
-    validateEmail();
-    validateSystemFields();
-    validatePassword();
-    validateEmailUniqueness();
+  function validateFinish(callback){
+    logger.log("UserModel.validateFinish", appModes.DEBUG)
+    callback(null, toJSON());
   }
+
+  this.ValidateModel = function validateModel(callback){
+    async.waterfall(
+      [
+        validateFirstName,
+        validateLastName,
+        validateEmail,
+        validateSystemFields,
+        validateEmailUniqueness,
+        validatePassword,
+        validateFinish
+      ],
+      callback
+    )
+  };
+      // function callbackfunction(err, results){
+      //   logger.log("UserModel.validateModel.callbackfunction", appModes.DEBUG);
+      //   callback(err, toJSON());
+      // })
+  //}
 
   // Initialization Methods
   initialize(params, model_definition, model, errors);
-  validateModel(callback);
+  //validateModel();
 }
 
 module.exports.UserModel = UserModel;
