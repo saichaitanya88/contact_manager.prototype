@@ -147,7 +147,7 @@ function SessionModel(user, callback) {
     else if (key == "updated_at"){
         props[key] = new Date(); // Always set
     }
-  }
+  };
 
   initialize(params, model_definition, model, errors);
 }

@@ -7,7 +7,7 @@ module.exports = exports = function(app) {
   //app.post('/application/authenticate', clientHandler.AuthenticateApplication);
   app.post('/application/user', usersHandler.CreateUser);
   app.post('/application/user/authenticate', usersHandler.AuthenticateUser);
-
+  app.get('/application/user/:userId', usersHandler.GetUserById);
   // app.post('/application/user', function(req, res){
   //   res.send("<h1>NOT IMPLEMENTED</h1> create user ",500);
   // });

@@ -10,7 +10,11 @@ function UsersHandler () {
   logger.log("IMPLEMENT OAUTH FIRST", appModes.DEBUG);
   var userDao = new UserDataAccess();
   this.GetUserByToken = function GetUser(req, res){
-    res.send("not implemented");
+    res.send("GetUserByToken not implemented");
+  };
+  this.GetUserById = function GetUser(req, res){
+    var userCore = new UserCore(req, res);
+    userCore.BeginGetUserByIdRequest();
   };
   this.AuthenticateUser = function UserSignIn(req, res){
     var userCore = new UserCore(req, res);
