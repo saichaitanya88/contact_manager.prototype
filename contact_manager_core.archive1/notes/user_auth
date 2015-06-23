@@ -1,0 +1,10 @@
+collection contains authentication tokens for the users
+
+{
+	user_id: "ObjectId",
+	token : "32 char string token url-friendly"
+	expiresAt : "DateTime",
+	createdAt : "DateTime",
+	modifiedAt : "DateTime"
+}
+

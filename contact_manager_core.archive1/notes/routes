@@ -1,0 +1,19 @@
+DONE
+[post] /app/user [app credentials] -> 201,4##,5##
+[post] /app/user/authenticate [app credentials; user credentials] -> 400, 200 with token, and id
+[get] /app/user/:id [app credentials; user credentials] -> returns user details
+
+IN PROGRESS
+[get] /app/user/:id/customObjects?:q [app credentials; user credentials] -> returns list of custom object names (links etc.)
+	no queries at this time - lists everything
+
+PENDING
+
+[post] /app/user/:id/customObject [app credentials; user credentials] -> creates custom object, metadata with schema and validations
+[put] /app/user/:id/customObject/:customObjectId [app credentials; user credentials] -> edits custom object
+[delete] /app/user/:id/customObject/:customObjectId [app credentials; user credentials] -> delete custom object
+[get] /app/user/:id/customObject/:customObjectId/data?:q [app credentials; user credentials] -> use query to request items based on queries
+[post] /app/user/:id/customObject/:customObjectId/data [app credentials; user credentials] -> create new data item
+[get] /app/user/:id/customObject/:customObjectId/data/:customObjectItemId [app credentials; user credentials]
+[put] /app/user/:id/customObject/:customObjectId/data/:customObjectItemId [app credentials; user credentials]
+[delete] /app/user/:id/customObject/:customObjectId/data/:customObjectItemId [app credentials; user credentials]

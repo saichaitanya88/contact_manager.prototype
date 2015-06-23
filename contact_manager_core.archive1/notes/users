@@ -1,0 +1,17 @@
+user collection data structure
+
+{
+	firstName : "sai",
+	lastName : "ch",
+	email : "email@address is username",
+	password : "plain_text",
+	database : "Math.random().toString(32).substring(2)",
+	createdAt : "DateTime",
+	modifiedAt : "DateTime"
+}
+{
+	firstName : "sai",
+	lastName : "ch",
+	email : "email@address is username",
+	password : "plain_text"
+}

@@ -1,0 +1,199 @@
+******
+APPLICATION SPEC
+******
+Create Account:
+	header: {appAuth}
+	[post] /application/account
+	body: {accountInfo}
+	response: {createAccountResponse}
+	responseCodes : {400, 201, 500}
+	process: {validateApp , read, validate(accountInfo), createAccount, returnResponse(success,error)}
+Signin to Account
+	header: {appAuth}
+	[post] /application/account/signin
+	body: {userCredentials}
+	response: {userSessionInfo}
+	responseCodes : {400, 200, 500}
+	process: {validateApp , read, validate(userCredentials), createUserSession, returnResponse(success,error)}
+Update Account:
+	header: {appAuth, userSession}
+	[put] /application/account/:accountId
+	body: {accountInfo}
+	response: {updateAccountResponse}
+	responseCodes : {401, 400, 200, 500}
+	process: {validateApp, validateSession , read, validate(accountInfo), editAccount, returnResponse(success,error)}
+
+Create CustomObject:
+	notes: simple create - no modelDefinition options. System definition will be generated first, then additional api calls will be needed to change modelDefinition.
+	header: { appAuth, userSession }
+	[post] /application/account/:accountId/customObject
+	body: { createCustomObjectInfo }
+	response: { createCustomObjectResponse }
+	responseCodes : {401, 400, 201, 500}
+	process: {validateApp, validateSession , read, validate(createCustomObjectInfo), createCustomObject, returnResponse(success,error)}
+Delete CustomObject:
+	header: {appAuth, userSession}
+	[delete] /application/account/:accountId/customObject/:customObjectId
+	response: { }
+	responseCodes : {401, 400, 204, 500}
+	process: { validateApp, validateSession , read, validate(customObjectId), deleteCustomObject, returnResponse(success,error) }
+Update CustomObject
+	notes: update description, name and other top level details
+	header: { appAuth, userSession }
+	[put] /application/account/:accountId/customObject/:customObjectId
+	body: { updateCustomObjectInfo }
+	response: { updateCustomObjectResponse }
+	responseCodes : {401, 400, 200, 500}
+	process: { validateApp, validateSession , read, validate(updateCustomObjectInfo), updateCustomObject, returnResponse(success,error) }
+Search CustomObjects
+	notes: search by name, description, createdBy, updatedBy (top level fields)
+	header: {appAuth, userSession}
+	[get] /application/account/:accountId/customObject?q1=val1&q2=val2
+	response: { [CustomObjectInfo] }
+	responseCodes : {401, 400, 200, 500}
+	process: { validateApp, validateSession , read, validate(queryString), searchCustomObjects, returnResponse(success,error) }
+Get CustomObject Details
+	notes: returns entire customObjectMD details - modelValidation, modelDefinition. (summary only)
+	header: {appAuth, userSession}
+	[get] /application/account/:accountId/customObject/:customObjectId
+	response: {CustomObjectInfo}
+	responseCodes : {401, 400, 200, 500}
+	process: { validateApp, validateSession , read, validate(customObjectId), getCustomObject, returnResponse(success,error) }
+create modelValidation
+	notes: returns entire customObjectMD details - modelValidation, modelDefinition. (summary only)
+	header: {appAuth, userSession}
+	[post] /application/account/:accountId/customObject/:customObjectId/modelValidation
+	body: {customObjectModelValidation}
+	response: {}
+	responseCodes : {401, 400, 200, 500}
+	process: {}
+edit modelValidation
+	header: {appAuth, userSession}
+	[put] /application/account/:accountId/customObject/:customObjectId/modelValidation/:modelValidationId
+	body: {customObjectModelValidation}
+	response: {}
+	process: {}
+delete modelValidation
+	header: {appAuth, userSession}
+	[delete] /application/account/:accountId/customObject/:customObjectId/modelValidation/:modelValidationId
+	response: {}
+	process: {}
+get modelDefinition
+	notes: add remove fields (does not remove data if field is removed)
+	header: {appAuth, userSession}
+	[get] /application/account/:accountId/customObject/:customObjectId/modelDefinition
+	response: {}
+	process: {}
+edit modelDefinition
+	notes: add remove fields (does not remove data if field is removed)
+	header: {appAuth, userSession}
+	[put] /application/account/:accountId/customObject/:customObjectId/modelDefinition
+	body: {customObjectModelDefinition}
+	response: {}
+	process: {}
+add customObjectData
+	notes: json with valid modelDefinition
+	header: {appAuth, userSession}
+	[post] /application/account/:accountId/customObject/:customObjectId/data
+	body: {customObjectMD.modelData}
+	response: {}
+	process: {}
+search customObjectData
+	notes: search by query relating to the model names
+	header: {appAuth, userSession}
+	[get] /application/account/:accountId/customObject/:customObjectId/data?q1=val1&q2=val2
+	response: {}
+	process: {}
+get customObjectData
+	notes: search by query relating to the model names
+	header: {appAuth, userSession}
+	[get] /application/account/:accountId/customObject/:customObjectId/data/:customObjectDataId
+	response: {}
+	process: {}
+edit customObjectData
+	notes: search by query relating to the model names
+	header: {appAuth, userSession}
+	[put] /application/account/:accountId/customObject/:customObjectId/data/:customObjectDataId
+	body: {customObjectMD.modelData}
+	response: {}
+	process: {}
+delete customObjectData
+	notes: search by query relating to the model names
+	header: {appAuth, userSession}
+	[delete] /application/account/:accountId/customObject/:customObjectId/data/:customObjectDataId
+	response: {}
+	process: {}
+
+nomenclature system fields - 
+createdAt, createdBy, updatedAt, updatedBy, _id, _databaseName
+
+******
+APPLICATION OBJECTS:
+******
+Application Authentication: 
+	Provided in the request header. 
+	Structure: 
+		appAuth => {	"apiKey" : "key", "apiSecret" : "secret", "appID" : "appID" }
+
+Account Information: 
+	Provided in order to create an application account. 
+	Structure: 
+		accountInfo : { "email" : "email@email.com", "password" : "password", "firstName" : "firstName", "lastName" : "lastName" }
+
+Created Account Response: 
+	Provided in response to creating an application account.
+	podName is a synonym for databaseName
+	Structure: 
+	createAccountResponse : 
+		{ "errors" : [{"fieldName1" : ["error1", "error2"]},{"fieldName2" : ["error1", "error2"]}], 
+			"accountInfo" : { "email" : "email@email.com", "password" : "password", "firstName" : "firstName", 
+												"lastName" : "lastName", "_id" : "ObjectID", "podName" : "podName", "createdAt" :"createdAt", "updatedAt" :"updatedAt" } 
+		}
+
+User Credentials:
+	Provided with the request in order to authenticate and start a user session. 
+	Structure:
+	userCredentials : { "email" : "emailAddress", "password" : "password" }
+
+User Session Info: 
+	If the user login is successful, the response will contain the userSessionInfo
+	Structure: 
+		userSessionInfo : { "_id" : ObjectId("556c519bf7cf93b3192ccdeb"), "userId" : ObjectId("554c14a421e552726e5ce1de"), "token" : "o3i6kib4wof20529", "expiresAt" : ISODate("2015-07-01T12:35:39.586Z"), "createdAt" : ISODate("2015-06-01T12:35:39.586Z"), "updatedAt" : ISODate("2015-06-01T12:35:39.586Z") }
+
+User Session:
+	Provided in request header.
+	Structure:
+		userSession : { "token" : "o3i6kib4wof20529" }
+
+Update Account Response:
+	Provided in response to creating an application account.
+	podName is a synonym for databaseName
+	Structure: 
+	updateAccountResponse : 
+		{ "errors" : [{"fieldName1" : ["error1", "error2"]},{"fieldName2" : ["error1", "error2"]}], 
+			"accountInfo" : { "email" : "email@email.com", "password" : "password", "firstName" : "firstName", 
+												"lastName" : "lastName", "_id" : "ObjectID", "podName" : "podName", "createdAt" :"createdAt", "updatedAt" :"updatedAt" } 
+		}
+
+
+Create CustomObject Info:
+	Provided with the request in order to create the CustomObject.
+	Structure:
+		createCustomObjectInfo  : {	"name" : "Person", 	"description" : "Person Collection Metadata" }
+
+Update CustomObject Info:
+Provided with the request in order to create the CustomObject.
+	Structure:
+		updateCustomObjectInfo  : {	"name" : "Person", 	"description" : "Person Collection Metadata" }
+
+Create CustomObject Response:
+	If the CustomObject is created successfully, the response will return the structure below.
+	Structure:
+		createCustomObjectResponse : 
+			{"name":"Person","description":"Person Collection Metadata","createdAt":"DateTime","modifiedAt":"DateTime","accountId":"ObjectId",modelValidations:[],"modelDefinition":{"__type":"Object","__structure":{"_id":{"__type":"ObjectId","__scope":"System"},"updatedAt":{"__type":"DateTime","__scope":"System"},"createdAt":{"__type":"DateTime","__scope":"System"}}}}
+
+Update CustomObject Response:
+	If the CustomObject is updated successfully, the response will return the structure below.
+	Structure:
+		updateCustomObjectResponse : 
+			{"name":"Person","description":"Person Collection Metadata","createdAt":"DateTime","modifiedAt":"DateTime","accountId":"ObjectId",modelValidations:[],"modelDefinition":{"__type":"Object","__structure":{"_id":{"__type":"ObjectId","__scope":"System"},"updatedAt":{"__type":"DateTime","__scope":"System"},"createdAt":{"__type":"DateTime","__scope":"System"}}}}

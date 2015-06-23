@@ -1,0 +1,5 @@
+organize and rename files so that they are all either plural, or singular. 
+
+change accountInfo.js to accounts.js or account.js
+
+validate object name so that systemName

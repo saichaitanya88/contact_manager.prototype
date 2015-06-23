@@ -1,0 +1,80 @@
+CustomObject model is defined as shown below:
+
+"customObject" : {
+	"name" : "Persons of Interest",
+	"customObjectName" : "person",
+	"description" : "My contacts are listed here",
+	"accountId" : account._id,
+	"modelValidation" : [ModelValidation];
+	"modelDefinition" : [ModelDefinition];
+	"createdAt" : new Date(),
+	"updatedAt" : new Date(),
+	"createdBy" : account._id,
+	"updatedBy" : account._id
+  var modelValidations = new Array();
+  var modelDefinition = new Object();
+}
+
+
+Modify the ModelDefinition so that the structure is an array rather than an object. 
+
+"modelDefinition" : [
+	{
+		"name" : "Last Name",
+		"fieldName" : "lastName"
+		"description" : "Person's Last Name",
+		"type" : "String",
+		"scope" : "Application",
+		"createdAt" : new Date(),
+		"updatedAt" : new Date(),
+		"createdBy" : account._id,
+		"updatedBy" : account._id
+	},
+	{
+		"name" : "First Name",
+		"fieldName" : "firstName"
+		"description" : "Person's First Name",
+		"type" : "String",
+		"scope" : "Application",
+		"createdAt" : new Date(),
+		"updatedAt" : new Date(),
+		"createdBy" : account._id,
+		"updatedBy" : account._id
+	},
+	{
+		"name" : "Created At",
+		"fieldName" : "createdAt",
+		"description" : "Created At",
+		"type" : "Date",
+		"scope" : "System",
+		"createdAt" : new Date(),
+		"updatedAt" : new Date(),
+		"createdBy" : account._id,
+		"updatedBy" : account._id
+	}
+]
+
+Modify the ModelValidation so that the structure is an array rather than an object. 
+
+"modelValidation" : [
+	{
+		"name" : "Validate Last Name",
+		"methodName" : "lastName",
+		"method" : "console.log('Hello World!');",
+		"description" : "Person's Last Name",
+		"createdAt" : new Date(),
+		"updatedAt" : new Date(),
+		"createdBy" : account._id,
+		"updatedBy" : account._id
+	},
+	{
+		"name" : "Validate First Name",
+		"methodName" : "firstName",
+		"method" : "console.log('Hello World!');",
+		"description" : "Person's Last Name",
+		"createdAt" : new Date(),
+		"updatedAt" : new Date(),
+		"createdBy" : account._id,
+		"updatedBy" : account._id
+	}
+]

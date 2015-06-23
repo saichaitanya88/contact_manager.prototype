@@ -1,0 +1,1 @@
+Models js files contain the structural references of the objects used by the application. The Models js files also contain the validation methods that are specific to the model. 
