@@ -387,6 +387,12 @@ function CustomObjectsAPI () {
     }
     function StartCreateCustomObjectModelFieldDefinition(customObjects){
       logger.log("CustomObjectsAPI.CreateCustomObjectModelField.StartCreateCustomObjectModelFieldDefinition", appModes.DEBUG);
+      if (!ObjectId.isValid(req.params.customObjectId) || !ObjectId.isValid(req.params.customObjectModelDefinitionId)) {
+        var response = new Object();
+        response.info = "Invalid customObjectId or customObjectModelDefinitionId";
+        res.status(400).send(response);
+        return;
+      }
       var customObjectModelField = new Object();
       customObjectModelField.name = req.body.name;
       customObjectModelField.description = req.body.description;
@@ -405,7 +411,9 @@ function CustomObjectsAPI () {
       function ValidateModelSuccess(){
         logger.log("CustomObjectsAPI.ValidateModelSuccess", appModes.DEBUG);
         var customObject = customObjects[0];
-        customObject.modelDefinition.push(customObjectModelFieldDefinition.ToJSON().data)
+        customObject.modelDefinition.push(customObjectModelFieldDefinition.ToJSON().data);
+        customObject.updatedBy = new ObjectId(params.currentAccountCredentials._id);
+        customObject.updatedAt = new Date();
         customObjectDAO.UpsertCustomObject(customObject, CreateCustomObjectFieldFailed, CreateCustomObjectFieldSuccess);
         function CreateCustomObjectFieldFailed(err){
           logger.log("CustomObjectsAPI.ValidateModelSuccess.CreateCustomObjectFieldFailed", appModes.DEBUG);
@@ -413,7 +421,7 @@ function CustomObjectsAPI () {
           response.customObjectModelFieldDefinition = customObjectModelFieldDefinition.ToJSON();
           response.customObject = customObject;
           response.info = err;
-          res.status(400).send(response);
+          res.status(500).send(response);
         }
         function CreateCustomObjectFieldSuccess(){
           logger.log("CustomObjectsAPI.ValidateModelSuccess.CreateCustomObjectFieldSuccess", appModes.DEBUG);
@@ -426,22 +434,163 @@ function CustomObjectsAPI () {
     }
   };
   this.UpdateCustomObjectModelFieldDefinition = function UpdateCustomObjectModelFieldDefinition(req,res){
-    res.status(500).send("notes: add remove fields (does not remove data if field is removed)"+
-  "header: {appAuth, userSession}"+
-  "route: [put] /application/account/:accountId/customObject/:customObjectId/modelDefinition"+
-  "body: {customObjectModelDefinition}"+
-  "response: { CustomObjectModelDefinition }"+
-  "responseCodes : {401, 400, 200, 500}"+
-  "process: { validateApp, validateSession , read, validate(customObjectModelDefinition), UpdateCustomObjectModelFieldDefinition, returnResponse(success,error)  }");
+	logger.log("CustomObjectsAPI.UpdateCustomObjectModelFieldDefinition", appModes.DEBUG);
+    var authenticationAPI = new AuthenticationAPI();
+    var currentAccountCredentials = undefined;
+    var currentApplicationCredentials = undefined;
+    var customObjectDAO = new CustomObjectDataAccess();
+    authenticationAPI.AuthenticateApplication(req, res, authenticationAPI.AuthenticateFailed, AuthenticateApplicationSuccess);
+    function AuthenticateApplicationSuccess(appCreds){
+      logger.log("CustomObjectsAPI.UpdateCustomObjectModelFieldDefinition.AuthenticateApplicationSuccess", appModes.DEBUG);
+      authenticationAPI.AuthenticateAccount(req,res, authenticationAPI.AuthenticateFailed, GetCustomObject);
+      currentApplicationCredentials = appCreds;
+    }
+    function GetCustomObject(accCreds){
+      logger.log("CustomObjectsAPI.UpdateCustomObjectModelFieldDefinition.GetCustomObject", appModes.DEBUG);
+      currentAccountCredentials = accCreds;
+      var customObjectQuery = new Object();
+      customObjectQuery._id = new ObjectId(req.params.customObjectId);
+      customObjectDAO.GetCustomObjects(customObjectQuery, GetCustomObjectFieldFailed, StartUpdateCustomObjectModelFieldDefinition);
+    }
+    function GetCustomObjectFieldFailed(err){
+      logger.log("CustomObjectsAPI.UpdateCustomObjectModelFieldDefinition.ValidationFailed", appModes.DEBUG);
+      var response = new Object();
+      response.info = err;
+      res.status(500).send(response);
+    }
+    function StartUpdateCustomObjectModelFieldDefinition(customObjects) {
+      logger.log("CustomObjectsAPI.UpdateCustomObjectModelFieldDefinition.StartUpdateCustomObjectModelFieldDefinition", appModes.DEBUG);
+      if (!ObjectId.isValid(req.params.customObjectId) || !ObjectId.isValid(req.params.customObjectModelDefinitionId)) {
+        var response = new Object();
+        response.info = "Invalid customObjectId or customObjectModelDefinitionId";
+        res.status(400).send(response);
+        return;
+      }
+      var customObjectModelField = new Object();
+      customObjectModelField.name = req.body.name;
+      customObjectModelField.description = req.body.description;
+      //customObjectModelField.type = req.body.type; // Cannot modify type
+      var params = new Object();
+      params.currentAccountCredentials = currentAccountCredentials;
+      params.customObject = customObjects[0];
+      var customObjectModelFieldDefinition = new CustomObjectModelFieldDefinition(customObjectModelField, params, "UPDATE");
+      customObjectModelFieldDefinition.ValidateModel(ValidateModelFailed, ValidateModelSuccess);
+      function ValidateModelFailed(){
+        logger.log("CustomObjectsAPI.ValidationFailed", appModes.DEBUG);
+        var response = new Object();
+        response.customObjectModelFieldDefinition = customObjectModelFieldDefinition.ToJSON();
+        res.status(400).send(response);
+      }
+      function ValidateModelSuccess(){
+        logger.log("CustomObjectsAPI.ValidateModelSuccess", appModes.DEBUG);
+        var customObject = customObjects[0];
+        // Replace the customObjectModelFieldDefinition in the array of modelDefinition items
+        for (var i = 0; i < customObject.modelDefinition.length; i++) {
+            if (customObject.modelDefinition[i]._id == customObjectModelFieldDefinition.ToJSON().data._id) {
+                customObject.modelDefinition[i] = customObjectModelFieldDefinition.ToJSON().data;
+            }
+        }
+        customObject.updatedBy = new ObjectId(params.currentAccountCredentials._id);
+        customObject.updatedAt = new Date();
+        customObjectDAO.UpsertCustomObject(customObject, UpdateCustomObjectFieldFailed, UpdateCustomObjectFieldSuccess);
+        function UpdateCustomObjectFieldFailed(err) {
+            logger.log("CustomObjectsAPI.ValidateModelSuccess.UpdateCustomObjectFieldFailed", appModes.DEBUG);
+          var response = new Object();
+          response.customObjectModelFieldDefinition = customObjectModelFieldDefinition.ToJSON();
+          response.customObject = customObject;
+          response.info = err;
+          res.status(500).send(response);
+        }
+        function UpdateCustomObjectFieldSuccess() {
+            logger.log("CustomObjectsAPI.ValidateModelSuccess.UpdateCustomObjectFieldSuccess", appModes.DEBUG);
+          var response = new Object();
+          response.customObjectModelFieldDefinition = customObjectModelFieldDefinition.ToJSON();
+          response.customObject = customObject;
+          res.status(200).send(response);
+        };
+      };
+    }
   };
-  this.DeleteCustomObjectModelField = function DeleteCustomObjectModelField(req,res){
-    res.status(500).send("notes: add remove fields (does not remove data if field is removed)"+
-  "header: {appAuth, userSession}"+
-  "route: [delete] /application/account/:accountId/customObject/:customObjectId/modelDefinition"+
-  "body: {customObjectModelDefinition}"+
-  "response: { CustomObjectModelDefinition }"+
-  "responseCodes : {401, 400, 200, 500}"+
-  "process: { validateApp, validateSession , read, validate(customObjectModelDefinition), updateCustomObjectModelDefinition, returnResponse(success,error)  }");
+  this.DeleteCustomObjectModelField = function DeleteCustomObjectModelField(req, res) {
+    //$pop element from list as long as customObjectId and customObjectModelDefinitionId are valid
+      logger.log("CustomObjectsAPI.DeleteCustomObjectModelField", appModes.DEBUG);
+      var authenticationAPI = new AuthenticationAPI();
+      var currentAccountCredentials = undefined;
+      var currentApplicationCredentials = undefined;
+      var customObjectDAO = new CustomObjectDataAccess();
+      authenticationAPI.AuthenticateApplication(req, res, authenticationAPI.AuthenticateFailed, AuthenticateApplicationSuccess);
+      function AuthenticateApplicationSuccess(appCreds) {
+          logger.log("CustomObjectsAPI.DeleteCustomObjectModelField.AuthenticateApplicationSuccess", appModes.DEBUG);
+          authenticationAPI.AuthenticateAccount(req, res, authenticationAPI.AuthenticateFailed, GetCustomObject);
+          currentApplicationCredentials = appCreds;
+      }
+      function GetCustomObject(accCreds) {
+          logger.log("CustomObjectsAPI.DeleteCustomObjectModelField.GetCustomObject", appModes.DEBUG);
+          currentAccountCredentials = accCreds;
+          var customObjectQuery = new Object();
+          customObjectQuery._id = new ObjectId(req.params.customObjectId);
+          customObjectDAO.GetCustomObjects(customObjectQuery, GetCustomObjectFieldFailed, StartDeleteCustomObjectModelField);
+      }
+      function GetCustomObjectFieldFailed(err) {
+          logger.log("CustomObjectsAPI.DeleteCustomObjectModelField.ValidationFailed", appModes.DEBUG);
+          var response = new Object();
+          response.info = err;
+          res.status(500).send(response);
+      }
+      function StartDeleteCustomObjectModelField(customObjects) {
+          logger.log("CustomObjectsAPI.DeleteCustomObjectModelField.StartDeleteCustomObjectModelField", appModes.DEBUG);
+          if (!ObjectId.isValid(req.params.customObjectId) || !ObjectId.isValid(req.params.customObjectModelDefinitionId)) {
+              var response = new Object();
+              response.info = "Invalid customObjectId or customObjectModelDefinitionId";
+              res.status(400).send(response);
+              return;
+          }
+          var customObjectModelField = new Object();
+          customObjectModelField.name = req.body.name;
+          customObjectModelField.description = req.body.description;
+          //customObjectModelField.type = req.body.type; // Cannot modify type
+          var params = new Object();
+          params.currentAccountCredentials = currentAccountCredentials;
+          params.customObject = customObjects[0];
+          var customObjectModelFieldDefinition = new CustomObjectModelFieldDefinition(customObjectModelField, params, "UPDATE");
+          customObjectModelFieldDefinition.ValidateModel(ValidateModelFailed, ValidateModelSuccess);
+          function ValidateModelFailed() {
+              logger.log("CustomObjectsAPI.ValidationFailed", appModes.DEBUG);
+              var response = new Object();
+              response.customObjectModelFieldDefinition = customObjectModelFieldDefinition.ToJSON();
+              res.status(400).send(response);
+          }
+          function ValidateModelSuccess() {
+              logger.log("CustomObjectsAPI.ValidateModelSuccess", appModes.DEBUG);
+              var customObject = customObjects[0];
+              // Replace the customObjectModelFieldDefinition in the array of modelDefinition items
+              var modelDefinition = customObject.modelDefinition;
+              for (var i = 0; i < customObject.modelDefinition.length; i++) {
+                  if (customObject.modelDefinition[i]._id != customObjectModelFieldDefinition.ToJSON().data._id) {
+                      modelDefinition.push(customObjectModelFieldDefinition.ToJSON().data);
+                  }
+              }
+              customObject.modelDefinition = modelDefinition;
+              customObject.updatedBy = new ObjectId(params.currentAccountCredentials._id);
+              customObject.updatedAt = new Date();
+              customObjectDAO.UpsertCustomObject(customObject, DeleteCustomObjectFieldFailed, DeleteCustomObjectFieldSuccess);
+              function DeleteCustomObjectFieldFailed(err) {
+                  logger.log("CustomObjectsAPI.ValidateModelSuccess.UpdateCustomObjectFieldFailed", appModes.DEBUG);
+                  var response = new Object();
+                  response.customObjectModelFieldDefinition = customObjectModelFieldDefinition.ToJSON();
+                  response.customObject = customObject;
+                  response.info = err;
+                  res.status(500).send(response);
+              }
+              function DeleteCustomObjectFieldSuccess() {
+                  logger.log("CustomObjectsAPI.ValidateModelSuccess.DeleteCustomObjectFieldSuccess", appModes.DEBUG);
+                  var response = new Object();
+                  response.customObjectModelFieldDefinition = customObjectModelFieldDefinition.ToJSON();
+                  response.customObject = customObject;
+                  res.status(200).send();
+              };
+          };
+      }
   };
 }
 
@@ -454,4 +603,4 @@ customObjectModelField: {
   description : "description",
   type : "ObjectId" or "String" or "Date" or "Number" or "Boolean"
 }
-*/
+*/ 
