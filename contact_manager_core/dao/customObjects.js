@@ -14,13 +14,13 @@ function CustomObjectDataAccess () {
 			function ReturnCollectionObjectsData(err, docs){
 				logger.log("CustomObjectDataAccess.ReturnCollectionObjectsData", appModes.DEBUG);
 				if (err){
-		          logger.log("CustomObjectDataAccess.GetCustomObjects.Collection.Find.Error", appModes.DEBUG);
-		          errorCallback(err);
-		        }
-		        else{
-		          logger.log("CustomObjectDataAccess.GetCustomObjects.Collection.Find.Success", appModes.DEBUG);
-		          successCallback(docs);
-		        }
+          logger.log("CustomObjectDataAccess.GetCustomObjects.Collection.Find.Error", appModes.DEBUG);
+          errorCallback(err);
+        }
+        else{
+          logger.log("CustomObjectDataAccess.GetCustomObjects.Collection.Find.Success", appModes.DEBUG);
+          successCallback(docs);
+        }
 			}
 		});
 	};

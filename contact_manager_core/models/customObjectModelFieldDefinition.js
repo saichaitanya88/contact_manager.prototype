@@ -49,7 +49,7 @@ function CustomObjectModelFieldDefinition(data, params, validationMode){
     //async.series([null,null],callback);
     for(var i = 0; i < params.customObject.modelDefinition.length; i++){
       logger.log(params.customObject.modelDefinition[i]);
-      if (params.customObject.modelDefinition[i].name == data.name){
+      if (params.customObject.modelDefinition[i].name == data.name && data._id != params.customObject.modelDefinition[i]._id){
         errors.name.push("Name must be unique");
       }
     }
@@ -59,6 +59,10 @@ function CustomObjectModelFieldDefinition(data, params, validationMode){
     logger.log("CustomObjectModelFieldDefinition.ValidateSystemName", appModes.DEBUG);
     if (validationMode == ValidationMode.CREATE){
       data.fieldName = getSystemName(data.name);
+    }
+    if (validationMode == ValidationMode.UPDATE){
+      callback();
+      return;
     }
     errors.fieldName = new Array();
     //async.series([null,null],callback);
@@ -73,6 +77,10 @@ function CustomObjectModelFieldDefinition(data, params, validationMode){
   function ValidateType(callback){
     logger.log("CustomObjectModelFieldDefinition.ValidateType", appModes.DEBUG);
     errors.type = new Array();
+    if (validationMode == ValidationMode.UPDATE){
+      callback();
+      return;
+    }
     //async.series([null,null],callback);
     var validDataType = false;
     for(var i = 0; i < ValidDataTypes.length; i++){

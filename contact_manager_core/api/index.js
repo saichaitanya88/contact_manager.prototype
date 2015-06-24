@@ -31,8 +31,8 @@ module.exports = exports = function(app) {
   app.post('/application/account/:accountId/customObject/:customObjectId/modelDefinition', customObjectsAPI.CreateCustomObjectModelField);
   app.put('/application/account/:accountId/customObject/:customObjectId/modelDefinition/:customObjectModelDefinitionId', 
     customObjectsAPI.UpdateCustomObjectModelFieldDefinition);
-  // app.delete('/application/account/:accountId/customObject/:customObjectId/modelDefinition/:customObjectModelDefinitionId', 
-  //   customObjectsAPI.DeleteCustomObjectModelFieldDefinition);
+  app.delete('/application/account/:accountId/customObject/:customObjectId/modelDefinition/:customObjectModelDefinitionId', 
+    customObjectsAPI.DeleteCustomObjectModelFieldDefinition);
   
   app.get('/application/account/:accountId/customObject/:customObjectId/modelValidation', customObjectsAPI.GetCustomObjectModelValidation);
   app.post('/application/account/:accountId/customObject/:customObjectId/modelValidation', customObjectsAPI.CreateCustomObjectModelValidation);
