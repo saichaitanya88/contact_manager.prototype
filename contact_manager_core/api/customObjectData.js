@@ -4,49 +4,65 @@ var logger = new Logger();
 var appModes = new ApplicationModes();
 var AuthenticationAPI = new require('./authentication').AuthenticationAPI;
 var CustomObjectDataModel = require("../models/customObjectData").CustomObjectDataModel;
+var CustomObjectDAO = require("../dao/customObjects").CustomObjectDataAccess;
+var CustomObjectDataDAO = require("../dao/customObjectData").CustomObjectDataAccess;
+var ObjectId = require('mongodb').ObjectId;
 
 function CustomObjectDataAPI () {
   "use strict";
   this.CreateCustomObjectData = function CreateCustomObjectData(req,res){
     logger.log("CustomObjectsAPI.CreateCustomObjectData", appModes.DEBUG);
     var authenticationAPI = new AuthenticationAPI();
-    var currentAccountCredentials = undefined;
-    var currentApplicationCredentials = undefined;
+    var params = new Object();
     authenticationAPI.AuthenticateApplication(req, res, authenticationAPI.AuthenticateFailed, AuthenticateApplicationSuccess)
     function AuthenticateApplicationSuccess(appCreds){
       logger.log("CustomObjectsAPI.CreateCustomObjectData.AuthenticateApplicationSuccess", appModes.DEBUG);
-      currentApplicationCredentials = appCreds;
-      authenticationAPI.AuthenticateAccount(req,res, authenticationAPI.AuthenticateFailed, StartCreateCustomObjectData);
+      params.currentApplicationCredentials = appCreds;
+      authenticationAPI.AuthenticateAccount(req,res, authenticationAPI.AuthenticateFailed, GetCustomObject);
     }
-    function StartCreateCustomObjectData(accCreds){
+    function GetCustomObject(accCreds){
+      params.currentAccountCredentials = accCreds;
+      var customObjectDAO = new CustomObjectDAO();
+      var customObjectQuery = new Object();
+      customObjectQuery.accountId = new ObjectId(accCreds._id);
+      customObjectQuery._id = new ObjectId(req.params.customObjectId);
+      customObjectDAO.GetCustomObjects(customObjectQuery, GetCustomObjectFailed, StartCreateCustomObjectData);
+    }
+    function GetCustomObjectFailed(err){
+      logger.log("CustomObjectsAPI.CreateCustomObjectData.GetCustomObject.GetCustomObjectFailed", appModes.DEBUG);
+        var response = new Object();
+        response.info = err;
+        res.status(400).send(response);
+    }
+    function StartCreateCustomObjectData(customObjects){
       logger.log("CustomObjectsAPI.CreateCustomObjectData.StartCreateCustomObjectData", appModes.DEBUG);
-      currentAccountCredentials = accCreds;
-      var customObjectData = req.body;
-      var params = new Object();
-      params.currentAccountCredentials = currentAccountCredentials;
-      var CustomObjectDataModel = new CustomObjectDataModel(customObjectData, params, "CREATE");
-      CustomObjectDataModel.ValidateModel(ValidateModelFailed, ValidateModelSuccess);
+      params.customObject = customObjects[0];
+      params.customObjectData = req.body;
+      var customObjectData= req.body;
+      var customObjectDataModel = new CustomObjectDataModel(customObjectData, params, "CREATE");
+      customObjectDataModel.ValidateModel(ValidateModelFailed, ValidateModelSuccess);
       function ValidateModelFailed(){
         logger.log("CustomObjectsAPI.CreateCustomObjectData.StartCreateCustomObjectData.ValidateModelFailed", appModes.DEBUG);
         var response = new Object();
-        response.customObject = CustomObjectDataModel.ToJSON();
+        response.customObject = customObjectDataModel.toJSON();
         res.status(400).send(response);
       }
       function ValidateModelSuccess(){
         logger.log("CustomObjectsAPI.CreateCustomObjectData.StartCreateCustomObjectData.ValidateModelSuccess", appModes.DEBUG);
-        var customObjectDataDAO = new CustomObjectDataAccess();
-        customObjectDataDAO.CreateCustomObjectData(CustomObjectDataModel.ToJSON().data, CreateCustomObjectDataFailed, CreateCustomObjectDataSuccess);
-        function CreateCustomObjectDataFailed(){
+        var customObjectDataDAO = new CustomObjectDataDAO();
+        logger.log(customObjectDataModel.toJSON(), appModes.DEBUG);
+        customObjectDataDAO.CreateCustomObjectData(customObjectDataModel.toJSON().data, params, CreateCustomObjectDataFailed, CreateCustomObjectDataSuccess);
+        function CreateCustomObjectDataFailed(err){
           logger.log("CustomObjectsAPI.CreateCustomObjectData.StartCreateCustomObjectData.ValidateModelSuccess.CreateCustomObjectDataFailed", appModes.DEBUG);
           var response = new Object();
-          response.CustomObjectData = CustomObjectDataModel.ToJSON();
+          response.customObjectData = customObjectDataModel.toJSON();
           response.info = err;
           res.status(400).send(response);
         }
         function CreateCustomObjectDataSuccess(){
           logger.log("CustomObjectsAPI.CreateCustomObjectData.StartCreateCustomObjectData.ValidateModelSuccess.CreateCustomObjectDataSuccess", appModes.DEBUG); 
           var response = new Object();
-          response.customObject = customObjectModel.ToJSON();
+          response.customObjectData = customObjectDataModel.toJSON();
           res.status(201).send(response);
         }
       }
