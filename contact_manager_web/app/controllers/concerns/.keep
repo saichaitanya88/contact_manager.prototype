@@ -1,0 +1,11 @@
+POST /application/account
+{"account":{"data":{"email":"saichaitanya@gmail.com","password":"123123123123","lastName":"Chaitanya2","firstName":"Sai","_id":"5591e727366f7c6667610379","podName":"r4ufckg","createdAt":"2015-06-30T00:47:35.796Z","updatedAt":"2015-06-30T00:47:35.796Z"},"errors":{"email":[],"password":[],"firstName":[],"lastName":[]},"isValid":true}}
+
+POST /application/account/signin
+{"session":{"accountId":"5591e727366f7c6667610379","token":"r053rrnctc8r529","createdAt":"2015-06-30T00:50:52.943Z","updatedAt":"2015-06-30T00:50:52.943Z","expiresAt":"2015-07-30T00:50:52.943Z"},"accountCredentials":{"email":"saichaitanya@gmail.com","password":"123123123123"}}
+
+GET /application/account/5591e727366f7c6667610379
+{"account":{"_id":"5591e727366f7c6667610379","email":"saichaitanya@gmail.com","password":"123123123123","lastName":"Chaitanya1","firstName":"Sai","podName":"t4afi3o","createdAt":"2015-06-30T00:47:35.796Z","updatedAt":"2015-06-30T01:34:45.269Z"}}
+
+PUT /application/account/5591e727366f7c6667610379
+{"account":{"data":{"email":"saichaitanya@gmail.com","password":"123123123123","lastName":"Chaitanya1","firstName":"Sai","_id":"5591e727366f7c6667610379","podName":"t4afi3o","createdAt":"2015-06-30T00:47:35.796Z","updatedAt":"2015-06-30T01:34:45.269Z"},"errors":{"password":[],"firstName":[],"lastName":[]},"isValid":true}}
