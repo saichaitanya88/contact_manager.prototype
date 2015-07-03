@@ -72,10 +72,11 @@ function CustomObjectDataModel(data, params, validationMode){
       return params[key];
     }
     else if (modelKeyDetails[key].type.toLowerCase() == "objectid") {
-      return "return ObjectId.isValid(params[key])";
+      if (ObjectId.isValid(value))
+        return new ObjectId(value);
     }
     else if (modelKeyDetails[key].type.toLowerCase() == "number") {
-      return params[key];
+      return Number(params[key]);
     }
     else if (modelKeyDetails[key].type.toLowerCase() == "boolean") {
       return params[key];
@@ -93,7 +94,6 @@ function CustomObjectDataModel(data, params, validationMode){
   //["ObjectId", "String", "Date", "Number", "Boolean"];
   function validDataType(key, modelKeyDetails, params) {
   	logger.log("CustomObjectDataModel.validDataType", appModes.DEBUG);
-  	logger.log("getDataType(params[key]).toLowerCase(): " + params[key]);
     if (modelKeyDetails[key].type.toLowerCase() == "string") {
       if (getDataType(params[key]).toLowerCase() == modelKeyDetails[key].type.toLowerCase())
         return true;

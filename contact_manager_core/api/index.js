@@ -1,13 +1,11 @@
 var AccountsAPI = require('./accounts').AccountsAPI;
-var CustomObjectsAPI = require('./customObject').CustomObjectsAPI;
+var CustomObjectsAPI = require('./customObjects').CustomObjectsAPI;
 var CustomObjectDataAPI = require('./customObjectData').CustomObjectDataAPI;
-var ErrorHandler = require('./error').errorHandler;
+var ErrorHandler = require('./errors').errorHandler;
 var Logger = require('../utilities/logger').Logger;
 var ApplicationModes = require("../utilities/config").ApplicationModes;
 var logger = new Logger();
 var appModes = new ApplicationModes();
-
-logger.log("Critical: No authentication is implemented at this time!".toUpperCase(), appModes.PROD)
 
 module.exports = exports = function(app) {
   var accountsAPI = new AccountsAPI();
@@ -16,6 +14,7 @@ module.exports = exports = function(app) {
   // Account Actions
   app.post('/application/account', accountsAPI.CreateAccount);
   app.post('/application/account/signin', accountsAPI.SignInToAccount);
+  app.get('/application/account/:accountId', accountsAPI.GetAccount);
   app.put('/application/account/:accountId', accountsAPI.UpdateAccount);
 
   // CustomObject Metadata Actions
@@ -25,7 +24,7 @@ module.exports = exports = function(app) {
   app.get('/application/account/:accountId/customObjects', customObjectsAPI.SearchCustomObjects);
   app.get('/application/account/:accountId/customObject/:customObjectId', customObjectsAPI.GetCustomObject);
 
-  app.get('/application/account/:accountId/customObject/:customObjectId/modelDefinition', customObjectsAPI.GetCustomObjectModelDefinition);
+  app.get('/application/account/:accountId/customObject/:customObjectId/modelDefinitions', customObjectsAPI.GetCustomObjectModelDefinition);
   app.get('/application/account/:accountId/customObject/:customObjectId/modelDefinition/:customObjectModelDefinitionId', 
     customObjectsAPI.GetCustomObjectModelFieldDefinition);
   app.post('/application/account/:accountId/customObject/:customObjectId/modelDefinition', customObjectsAPI.CreateCustomObjectModelField);
@@ -41,13 +40,15 @@ module.exports = exports = function(app) {
 
   // CustomObject Data Actions
   app.post('/application/account/:accountId/customObject/:customObjectId/data', customObjectDataAPI.CreateCustomObjectData);
-  app.get('/application/account/:accountId/customObject/:customObjectId/data', customObjectDataAPI.SearchCustomObjectData);
+  app.post('/application/account/:accountId/customObject/:customObjectId/data/search', customObjectDataAPI.SearchCustomObjectData);
   app.get('/application/account/:accountId/customObject/:customObjectId/data/:customObjectDataId', customObjectDataAPI.GetCustomObjectData);
   app.put('/application/account/:accountId/customObject/:customObjectId/data/:customObjectDataId', customObjectDataAPI.UpdateCustomObjectData);
   app.delete('/application/account/:accountId/customObject/:customObjectId/data/:customObjectDataId', customObjectDataAPI.DeleteCustomObjectData);
 
   app.all('*', function(req, res){
+    logger.log("LoggingError".toUpperCase(), appModes.DEBUG)
     res.status(404).send('Unable to process request');
+    ErrorHandler({message: '404: Unable to process request', stack: null}, req, res, null, false)
   });
 
   // Error handling middleware

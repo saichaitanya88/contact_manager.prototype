@@ -81,8 +81,6 @@ function CustomObjectDataAccess () {
         else{
           logger.log("CustomObjectDataAccess.GetCustomObjectModelFieldDefinition.Collection.Find.Success", appModes.DEBUG);
           successCallback(docs);
-          // else
-          //   errorCallback(doc);
         };
       });
 		});
