@@ -1,0 +1,33 @@
+partials/customObjects/new.html
+
+<form novalidate class="form-horizontal" name="form">
+  <div class="form-group">
+    <label for="name" class="col-sm-2 control-label">Name</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" required name="name" ng-model="customObject.name">
+      <div ng-show="form.name.$error.required">Please enter the Name</div>
+      <div ng-show="errorResponse.customObject.errors.firstName.length > 0">
+        <div ng-repeat="error in errorResponse.customObject.errors.name">
+          <div>{{error}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="description" class="col-sm-2 control-label">Description</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" name="description" ng-model="customObject.description">
+      <div ng-show="errorResponse.customObject.errors.description.length > 0">
+        <div ng-repeat="error in errorResponse.customObject.errors.description">
+          <div>{{error}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="button" class="btn btn-default" ng-disabled='!form.$valid' ng-click="CreateCustomObject()">Create CustomObject</button>
+      <div ng-show="form.$invalid">Please complete all fields before submitting</div>
+    </div>
+  </div>
+</form>

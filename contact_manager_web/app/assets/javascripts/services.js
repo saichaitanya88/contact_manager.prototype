@@ -6,25 +6,47 @@ var contactManagerServices = angular.module('contactManagerServices', ['ngResour
 
 var authHeader = "Basic dGVzdC1rZXk6dGVzdC1zZWNyZXQ="
 var headers = { "Authentication" : authHeader }
-// contactManagerServices.factory('Account', ['$resource',
-//   function($resource){
-//     return $resource('/application/account', 
-//     	{}, 
-//     	{
-//       	create: { method:'POST', params:{account:'{}'} , headers: headers}
-//     	}
-//     );
-//   }]);
-
 
 contactManagerServices.factory('Account', function($http) {
-    var create = function(account, successCallback, errorCallback) {
-        return $http({method: "POST", url: "/application/account", data: account, headers: headers})
-        .success(function(data, status){
-          successCallback(data, status);
-        }).error(function(data, status){
-          errorCallback(data, status);
-        });
-    };
-    return { create: create };
+	function httpRequest(request, successCallback, errorCallback){
+		$http(request).success(function(data, status){successCallback(data, status);}).error(function(data, status){errorCallback(data, status);});
+	}
+  var Create = function(account, successCallback, errorCallback) {
+      httpRequest({method: "POST", url: "/application/account", data: account, headers: headers}, successCallback, errorCallback);
+  };
+  var SignIn = function(account, successCallback, errorCallback) {
+      httpRequest({method: "POST", url: "/application/account/signin", data: account, headers: headers}, successCallback, errorCallback);
+  };
+  var Authenticate = function(account, successCallback, errorCallback) {
+  		headers.SessionToken = account.SessionToken;
+      httpRequest({method: "GET", url: "/application/account/"+account.accountId, data: account, headers: headers}, successCallback, errorCallback);
+  };
+  var Update = function(account, params, successCallback, errorCallback) {
+  		headers.SessionToken = params.SessionToken;
+      httpRequest({method: "PUT", url: "/application/account/"+params.accountId, data: account, headers: headers}, successCallback, errorCallback);
+  };
+  return { Create: Create, SignIn: SignIn, Authenticate: Authenticate, Update: Update };
+});
+
+contactManagerServices.factory('CustomObject', function($http) {
+	function httpRequest(request, successCallback, errorCallback){
+		$http(request).success(function(data, status){successCallback(data, status);}).error(function(data, status){errorCallback(data, status);});
+	}
+	var Search = function(query, params, successCallback, errorCallback) {
+  		headers.SessionToken = params.SessionToken;
+      httpRequest({method: "POST", url: "/application/account/"+params.accountId+"/customObjects", data: query, headers: headers}, successCallback, errorCallback);
+  };
+  var Create = function(customObject, params, successCallback, errorCallback) {
+  		headers.SessionToken = params.SessionToken;
+      httpRequest({method: "POST", url: "/application/account/"+params.accountId+"/customObject", data: customObject, headers: headers}, successCallback, errorCallback);
+  };
+  var Update = function(customObject, params, successCallback, errorCallback) {
+  		headers.SessionToken = params.SessionToken;
+      httpRequest({method: "PUT", url: "/application/account/"+params.accountId, data: customObject, headers: headers}, successCallback, errorCallback);
+  };
+  var Get = function(customObject, params, successCallback, errorCallback) {
+  		headers.SessionToken = params.SessionToken;
+      httpRequest({method: "Get", url: "/application/account/"+params.accountId+"/customObject/"+customObject.customObjectId, data: null, headers: headers}, successCallback, errorCallback);
+  };
+  return { Search: Search, Update: Update, Create: Create, Get: Get };
 });

@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   get '/application/account/:accountId' => 'account#get'
   put '/application/account/:accountId' => 'account#edit'
   
-  get '/application/account/:accountId/customObjects' => 'custom_object#search'
+  post '/application/account/:accountId/customObjects' => 'custom_object#search'
   post '/application/account/:accountId/customObject' => 'custom_object#create'
   get '/application/account/:accountId/customObject/:customObjectId' => 'custom_object#get'
   put '/application/account/:accountId/customObject/:customObjectId' => 'custom_object#edit'
@@ -28,13 +28,14 @@ Rails.application.routes.draw do
 
 
   get 'partials/accounts/new.html' => 'angular#accounts_new'
-  get '/application/account/signin' => 'angular#accounts_signin'
-  get '/application/account/:accountId' => 'angular#accounts_get'
-  get '/application/account/:accountId/customObjects' => 'angular#custom_objects_search'
-  get '/application/account/:accountId/customObject/:customObjectId' => 'angular#custom_objects_get'
-  get '/application/account/:accountId/customObject/:customObjectId/modelDefinition' => 'angular#custom_object_model_definition_new'
-  get '/application/account/:accountId/customObject/:customObjectId/modelDefinition/:customObjectModelDefinitionId' => 'angular#custom_object_model_definition_get'
-  get '/application/account/:accountId/customObject/:customObjectId/data/search' => 'angular#custom_object_data_search'
-  get '/application/account/:accountId/customObject/:customObjectId/data/:customObjectDataId' => 'angular#custom_object_data_get'
-  get '/static/not-found' => 'angular#static_not_found'
+  get 'partials/accounts/signin.html' => 'angular#accounts_signin'
+  get 'partials/accounts/get.html' => 'angular#accounts_get'
+  get 'partials/customObjects/new.html' => 'angular#custom_objects_new'
+  get 'partials/customObjects/search.html' => 'angular#custom_objects_search'
+  get 'partials/customObjects/get.html' => 'angular#custom_objects_get'
+  get 'partials/customObjects/modelDefinitions/new.html' => 'angular#custom_object_model_definition_new'
+  get 'partials/customObjects/modelDefinitions/get.html' => 'angular#custom_object_model_definition_get'
+  get 'partials/customObjects/data/search.html' => 'angular#custom_object_data_search'
+  get 'partials/customObjects/data/get.html' => 'angular#custom_object_data_get'
+  get 'partials/static/not-found.html' => 'angular#static_not_found'
 end

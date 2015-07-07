@@ -13,6 +13,10 @@ class AngularController < ApplicationController
   end
 
   def custom_objects_search
+    render '/partials/custom_objects/search'
+  end
+
+  def custom_objects_new
     render '/partials/custom_objects/new'
   end
 
@@ -21,23 +25,23 @@ class AngularController < ApplicationController
   end
 
   def custom_object_model_definition_new
-    render '/partials/custom_object_model_definition/new'
+    render '/partials/custom_objects/model_definition/new'
   end
 
   def custom_object_model_definition_get
-    render '/partials/custom_object_model_definition/get'
+    render '/partials/custom_objects/model_definition/get'
   end
 
   def custom_object_data_search
-    render '/partials/custom_object_data/search'
+    render '/partials/custom_objects/data/search'
   end
 
   def custom_object_data_get
-    render '/partials/custom_object_data/get'
+    render '/partials/custom_objects/data/get'
   end
 
   def static_not_found
-    render '/partials/static/404'
+    render '/static/not-found'
   end
 
 end

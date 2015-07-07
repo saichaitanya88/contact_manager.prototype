@@ -22,7 +22,7 @@ class AccountController < ApplicationController
   end
 
   def login
-    credentials = { email: 'saichaitanya@gmail.com', password: '123123123123'}
+    credentials = request.params['account']
     path =  "/application/account/signin"
     api_request = Net::HTTP::Post.new(path, initheader = {'Content-Type' =>'application/json'})
     api_request.basic_auth api_key, api_secret
@@ -32,9 +32,9 @@ class AccountController < ApplicationController
   end
 
   def get
-    accountId = '5591e727366f7c6667610379'
+    accountId = request.params['accountId']
     path = "/application/account/#{accountId}"
-    token = 'r053rrnctc8r529'
+    token = request.headers['SessionToken']
     api_request = Net::HTTP::Get.new(path, initheader = {'Content-Type' =>'application/json'})
     api_request.basic_auth api_key, api_secret
     api_request.add_field("Session-Token", token)
@@ -43,10 +43,11 @@ class AccountController < ApplicationController
   end
 
   def edit
-    accountId = '5591e727366f7c6667610379'
-    credentials = { firstName: "Sai", lastName: "Chaitanya1" }
+    debugger
+    accountId = request.params['accountId']
+    credentials = request.params['account']
     path = "/application/account/#{accountId}"
-    token = 'r053rrnctc8r529'
+    token = request.headers['SessionToken']
     api_request = Net::HTTP::Put.new(path, initheader = {'Content-Type' =>'application/json'})
     api_request.basic_auth api_key, api_secret
     api_request.add_field("Session-Token", token)

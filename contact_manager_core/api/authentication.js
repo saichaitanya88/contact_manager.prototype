@@ -14,6 +14,9 @@ function AuthenticationAPI () {
   "use strict";
   this.AuthenticateApplication = function AuthenticateApplication(req,res, errorCallback, successCallback){
   	logger.log("AuthenticationAPI.AuthenticateApplication", appModes.DEBUG);
+    logger.log("req.url: " + JSON.stringify(req.url));
+    logger.log("req.method: " + JSON.stringify(req.method));
+    logger.log("req.cookies: " + JSON.stringify(req.cookies));
     logger.log("req.headers: " + JSON.stringify(req.headers));
     logger.log("req.body: " + JSON.stringify(req.body));
     var key = '';

@@ -4,7 +4,7 @@
 /* App Module */
 
 var contactManagerApp = angular.module('contactManagerApp', [
-  'ngRoute','contactManagerControllers', 'contactManagerServices'
+  'ngRoute', 'ngCookies','contactManagerControllers', 'contactManagerServices'
 ]);
 contactManagerApp.config(['$routeProvider',
 function($routeProvider) {
@@ -18,7 +18,7 @@ function($routeProvider) {
       controller: 'AccountCtrl'
     }).
   when('/application/account/signin', {
-      templateUrl: 'partials/accounts/sign-in.html',
+      templateUrl: 'partials/accounts/signin.html',
       controller: 'AccountCtrl'
     }).
   when('/application/account/:accountId', {
@@ -27,6 +27,10 @@ function($routeProvider) {
     }).
   when('/application/account/:accountId/customObjects', {
       templateUrl: 'partials/customObjects/search.html',
+      controller: 'CustomObjectsCtrl'
+    }).
+  when('/application/account/:accountId/customObject', {
+      templateUrl: 'partials/customObjects/new.html',
       controller: 'CustomObjectsCtrl'
     }).
   when('/application/account/:accountId/customObject/:customObjectId', {
