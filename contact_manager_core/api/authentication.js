@@ -53,6 +53,7 @@ function AuthenticationAPI () {
     }
     function GetSessionSuccess(session){
       logger.log("AuthenticationAPI.AuthenticateAccount.GetSessionSuccess", appModes.DEBUG);   
+      logger.log("session: " + session, appModes.DEBUG);
       if (session == null || session == undefined) { errorCallback(res); return; }
       if (!(session.expiresAt > new Date() && session.accountId.toString() == accountId.toString())){
         errorCallback(res);

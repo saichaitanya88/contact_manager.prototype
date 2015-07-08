@@ -57,10 +57,10 @@ contactManagerControllers.controller('AccountCtrl', ['$scope', '$http', '$cookie
 );
 
 
-contactManagerControllers.controller('CustomObjectsCtrl', ['$scope', '$http', '$cookies' , '$location', '$routeParams', 'Account', 'CustomObject', 
+contactManagerControllers.controller('CustomObjectsCtrl', ['$scope', '$http', '$cookies', '$location', '$routeParams', 'Account', 'CustomObject', 
 	function($scope, $http, $cookies, $location, $routeParams,Account, CustomObject) {
 		$scope.searchTerm = '';
-		$scope.customObjects = []
+		$scope.customObjects = [];
 		$scope.getAuthParams = function(){
 			return { accountId : $cookies.get("AccountId"), "SessionToken" : $cookies.get("SessionToken")};
   	}
@@ -95,8 +95,8 @@ contactManagerControllers.controller('CustomObjectsCtrl', ['$scope', '$http', '$
 		}
 		$scope.SearchCustomObjects();
 		$scope.GetCustomObject = function(){
-			CustomObject.Get({ customObjectId : $routeParams.customObjectId}, $scope.getAuthParams(), function(data, status){
-	  			$scope.customObject = data.customObject;
+			CustomObject.Get({ _id : $routeParams.customObjectId}, $scope.getAuthParams(), function(data, status){
+	  			$scope.customObject = data.customObject[0];
 	  		}, function(data, status){
 					$scope.errorResponse = JSON.stringify(data, null, 2);
 	  		});	
@@ -104,15 +104,47 @@ contactManagerControllers.controller('CustomObjectsCtrl', ['$scope', '$http', '$
 		if($routeParams.customObjectId != null){
 			$scope.GetCustomObject();
 		}
+		$scope.UpdateCustomObject = function(){
+			CustomObject.Update($scope.customObject, $scope.getAuthParams(), function(data, status){
+	  			//$location.path("/application/account/" + $scope.getAuthParams().accountId+ "/customObject/" + data.customObject.data._id);
+	  			$scope.form.$setPristine();
+	  		}, function(data, status){
+					$scope.errorResponse = JSON.stringify(data, null, 2);
+	  		});
+		}
+		$scope.DeleteCustomObject = function(){
+			CustomObject.Delete($scope.customObject, $scope.getAuthParams(), function(data, status){
+	  			$location.path("/application/account/" + $scope.getAuthParams().accountId+ "/customObjects");
+	  		}, function(data, status){
+					$scope.errorResponse = JSON.stringify(data, null, 2);
+	  		});
+		}
 	}]
 );
 
-contactManagerControllers.controller('CustomObjectmodelDefinitionCtrl', ['$scope', '$http', function($scope, $http) {
-	  }
-  ]
+contactManagerControllers.controller('CustomObjectModelDefinitionCtrl', ['$scope', '$http', '$cookies', '$location', '$routeParams', 'Account', 'CustomObjectModelDefinition',
+	function($scope, $http, $cookies, $location, $routeParams, Account, CustomObjectModelDefinition) {
+		$scope.getAuthParams = function(){
+			return { 
+				accountId: $cookies.get("AccountId"), 
+				SessionToken: $cookies.get("SessionToken"),
+				customObjectId: $routeParams.customObjectId
+			};
+  	}
+		$scope.GetCustomObjectModelDefinition = function(){
+			CustomObjectModelDefinition.Get({ _id : $routeParams.customObjectModelDefinitionId}, $scope.getAuthParams(), function(data, status){
+	  			$scope.customObjectModelDefinition = data[0].modelDefinition[0];
+	  		}, function(data, status){
+					$scope.errorResponse = JSON.stringify(data, null, 2);
+	  		});	
+		}
+		if($routeParams.customObjectModelDefinitionId != null){
+			$scope.GetCustomObjectModelDefinition();
+		}
+	}]
 );
 
-contactManagerControllers.controller('CustomObjectmodelDataCtrl', ['$scope', '$http', function($scope, $http) {
+contactManagerControllers.controller('CustomObjectModelDataCtrl', ['$scope', '$http', function($scope, $http) {
 	  }
   ]
 );

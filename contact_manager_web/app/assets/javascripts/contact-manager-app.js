@@ -39,19 +39,19 @@ function($routeProvider) {
     }).
   when('/application/account/:accountId/customObject/:customObjectId/modelDefinition', {
       templateUrl: 'partials/customObjects/modelDefinitions/new.html',
-      controller: 'CustomObjectmodelDefinitionCtrl'
+      controller: 'CustomObjectModelDefinitionCtrl'
     }).
   when('/application/account/:accountId/customObject/:customObjectId/modelDefinition/:customObjectModelDefinitionId', {
       templateUrl: 'partials/customObjects/modelDefinitions/get.html',
-      controller: 'CustomObjectmodelDefinitionCtrl'
+      controller: 'CustomObjectModelDefinitionCtrl'
     }).
   when('/application/account/:accountId/customObject/:customObjectId/data/search', {
       templateUrl: 'partials/customObjects/data/search.html',
-      controller: 'CustomObjectmodelDataCtrl'
+      controller: 'CustomObjectModelDataCtrl'
     }).
   when('/application/account/:accountId/customObject/:customObjectId/data/:customObjectDataId', {
       templateUrl: 'partials/customObjects/data/get.html',
-      controller: 'CustomObjectmodelDataCtrl'
+      controller: 'CustomObjectModelDataCtrl'
     }).
     when('/static/not-found', {
       templateUrl: 'partials/static/not-found.html',

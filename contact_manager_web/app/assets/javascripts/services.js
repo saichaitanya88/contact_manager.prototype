@@ -42,11 +42,43 @@ contactManagerServices.factory('CustomObject', function($http) {
   };
   var Update = function(customObject, params, successCallback, errorCallback) {
   		headers.SessionToken = params.SessionToken;
-      httpRequest({method: "PUT", url: "/application/account/"+params.accountId, data: customObject, headers: headers}, successCallback, errorCallback);
+      httpRequest({method: "PUT", url: "/application/account/"+params.accountId+"/customObject/"+customObject._id, data: customObject, headers: headers}, successCallback, errorCallback);
   };
   var Get = function(customObject, params, successCallback, errorCallback) {
   		headers.SessionToken = params.SessionToken;
-      httpRequest({method: "Get", url: "/application/account/"+params.accountId+"/customObject/"+customObject.customObjectId, data: null, headers: headers}, successCallback, errorCallback);
+      httpRequest({method: "Get", url: "/application/account/"+params.accountId+"/customObject/"+customObject._id, data: null, headers: headers}, successCallback, errorCallback);
   };
-  return { Search: Search, Update: Update, Create: Create, Get: Get };
+  var Delete = function(customObject, params, successCallback, errorCallback) {
+  		headers.SessionToken = params.SessionToken;
+      httpRequest({method: "Delete", url: "/application/account/"+params.accountId+"/customObject/"+customObject._id, data: null, headers: headers}, successCallback, errorCallback);
+  };
+  return { Search: Search, Update: Update, Create: Create, Get: Get, Delete: Delete };
+});
+
+
+contactManagerServices.factory('CustomObjectModelDefinition', function($http) {
+	function httpRequest(request, successCallback, errorCallback){
+		$http(request).success(function(data, status){successCallback(data, status);}).error(function(data, status){errorCallback(data, status);});
+	}
+	var Search = function(query, params, successCallback, errorCallback) {
+  		headers.SessionToken = params.SessionToken;
+      httpRequest({method: "POST", url: "/application/account/"+params.accountId+"/customObjects", data: query, headers: headers}, successCallback, errorCallback);
+  };
+  var Create = function(customObject, params, successCallback, errorCallback) {
+  		headers.SessionToken = params.SessionToken;
+      httpRequest({method: "POST", url: "/application/account/"+params.accountId+"/customObject", data: customObject, headers: headers}, successCallback, errorCallback);
+  };
+  var Update = function(customObject, params, successCallback, errorCallback) {
+  		headers.SessionToken = params.SessionToken;
+      httpRequest({method: "PUT", url: "/application/account/"+params.accountId+"/customObject/"+customObject._id, data: customObject, headers: headers}, successCallback, errorCallback);
+  };
+  var Get = function(customObjectModelDefinition, params, successCallback, errorCallback) {
+  		headers.SessionToken = params.SessionToken;
+      httpRequest({method: "Get", url: "/application/account/"+params.accountId+"/customObject/"+params.customObjectId+"/modelDefinition/"+customObjectModelDefinition._id, data: null, headers: headers}, successCallback, errorCallback);
+  };
+  var Delete = function(customObject, params, successCallback, errorCallback) {
+  		headers.SessionToken = params.SessionToken;
+      httpRequest({method: "Delete", url: "/application/account/"+params.accountId+"/customObject/"+customObject._id, data: null, headers: headers}, successCallback, errorCallback);
+  };
+  return { Search: Search, Update: Update, Create: Create, Get: Get, Delete: Delete };
 });

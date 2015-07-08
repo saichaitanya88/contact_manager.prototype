@@ -6,11 +6,11 @@ class CustomObjectModelDefinitionController < ApplicationController
   # For APIs, you may want to use :null_session instead.
   #protect_from_forgery with: :exception
   def search
-    accountId = '5591e727366f7c6667610379'
-    customObjectId = '559267d47ab85cc371d4da32'
-    customObjectModelDefinitionId = '559267d47ab85cc371d4da34'
+    accountId = request.params["accountId"]
+    customObjectId = request.params["customObjectId"]
+    customObjectModelDefinitionId = request.params["customObjectModelDefinitionId"]
     path = "/application/account/#{accountId}/customObject/#{customObjectId}/modelDefinitions"
-    token = 'r053rrnctc8r529'
+    token = request.headers['SessionToken']
     api_request = Net::HTTP::Get.new(path, initheader = {'Content-Type' =>'application/json'})
     api_request.basic_auth api_key, api_secret
     api_request.add_field("Session-Token", token)
@@ -34,11 +34,11 @@ class CustomObjectModelDefinitionController < ApplicationController
   end
 
   def get
-    accountId = '5591e727366f7c6667610379'
-    customObjectId = '559267d47ab85cc371d4da32'
-    customObjectModelDefinitionId = '559267d47ab85cc371d4da34'
+    accountId = request.params["accountId"]
+    customObjectId = request.params["customObjectId"]
+    customObjectModelDefinitionId = request.params["customObjectModelDefinitionId"]
     path = "/application/account/#{accountId}/customObject/#{customObjectId}/modelDefinition/#{customObjectModelDefinitionId}"
-    token = 'r053rrnctc8r529'
+    token = request.headers['SessionToken']
     api_request = Net::HTTP::Get.new(path, initheader = {'Content-Type' =>'application/json'})
     api_request.basic_auth api_key, api_secret
     api_request.add_field("Session-Token", token)

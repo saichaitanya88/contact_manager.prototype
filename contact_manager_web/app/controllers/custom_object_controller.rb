@@ -44,8 +44,8 @@ class CustomObjectController < ApplicationController
 
   def edit
     accountId = request.params["accountId"]
-    customObjectId = '559267d47ab85cc371d4da32'
-    custom_object = { name: "My CustomObject2" }
+    customObjectId = request.params["customObjectId"]
+    custom_object = request.params["custom_object"]
     path = "/application/account/#{accountId}/customObject/#{customObjectId}"
     token = request.headers['SessionToken']
     api_request = Net::HTTP::Put.new(path, initheader = {'Content-Type' =>'application/json'})
@@ -58,7 +58,7 @@ class CustomObjectController < ApplicationController
 
   def delete
     accountId = request.params["accountId"]
-    customObjectId = '559267d47ab85cc371d4da32'
+    customObjectId = request.params["customObjectId"]
     path = "/application/account/#{accountId}/customObject/#{customObjectId}"
     token = request.headers['SessionToken']
     api_request = Net::HTTP::Delete.new(path, initheader = {'Content-Type' =>'application/json'})

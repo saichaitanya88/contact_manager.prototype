@@ -11,7 +11,7 @@ function SessionsDataAccess () {
     MongoClient.connect("mongodb://localhost:27017/conman_dev", {native_parser:true}, function(err, db) {
       // Get the first db and do an update document on it
       var sessionsCollection = db.collection('sessions');
-      
+      logger.log(session)
       sessionsCollection.findOne(session , {"sort" : { "expiresAt" : -1 }, "limit":1}, function (err, doc) {
         logger.log("SessionsDataAccess.GetUserBySessionToken.Collection.FindOne", appModes.DEBUG);
         "use strict";
