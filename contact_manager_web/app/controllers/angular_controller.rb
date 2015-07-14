@@ -32,6 +32,10 @@ class AngularController < ApplicationController
     render '/partials/custom_objects/model_definition/get'
   end
 
+  def custom_object_data_new
+    render '/partials/custom_objects/data/new'
+  end
+
   def custom_object_data_search
     render '/partials/custom_objects/data/search'
   end
@@ -44,4 +48,7 @@ class AngularController < ApplicationController
     render '/static/not-found'
   end
 
+  def static_navbar
+    render '/static/navbar'
+  end
 end

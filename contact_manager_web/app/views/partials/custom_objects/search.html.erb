@@ -1,6 +1,6 @@
 partials/customObjects/search.html
 <br/>
-<a ng-href="#/application/account/{{getAuthParams().accountId}}/customObject">Create New CustomObject</a>
+<a ng-href="#/application/account/{{AuthParams.accountId}}/customObject">Create New CustomObject</a>
 <br/>
 Search Custom Objects <input ng-model="searchTerm" ng-change="SearchCustomObjects()" />
 
@@ -8,7 +8,7 @@ Search Custom Objects <input ng-model="searchTerm" ng-change="SearchCustomObject
 	Displaying a total of {{ customObjects.length }} CustomObjects
 </div>
 <div ng-repeat="customObject in customObjects">
-	<a ng-href="#/application/account/{{getAuthParams().accountId}}/customObject/{{customObject._id}}">id: {{ customObject._id}}</a> <br/>
+	<a ng-href="#/application/account/{{AuthParams.accountId}}/customObject/{{customObject._id}}">id: {{ customObject._id}}</a> <br/>
 	name: {{ customObject.name}} <br/>
 	description: {{ customObject.description}}
 </div>

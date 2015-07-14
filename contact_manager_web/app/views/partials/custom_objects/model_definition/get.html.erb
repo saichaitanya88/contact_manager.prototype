@@ -1,3 +1,43 @@
 partials/customObjects/modelDefinitions/get.html
 
+
+<form novalidate class="form-horizontal" name="form">
+  <div class="form-group">
+    <label for="name" class="col-sm-2 control-label">Name</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" required ng-disabled='FieldDisabled()' name="name" ng-model="customObjectModelDefinition.name">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="description" class="col-sm-2 control-label">Description</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" name="description" ng-model="customObjectModelDefinition.description">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="type" class="col-sm-2 control-label">Data Type</label>
+    <div class="col-sm-10">
+    	<select class='form-control' ng-model="customObjectModelDefinition.type" ng-disabled="DataTypeDisabled()" ng-options="type as type for type in ValidDataTypes"></select>
+    </div>
+  </div>
+  <div class="form-group" ng-show='customObjectModelDefinition.fieldName'>
+    <label for="Date Type" class="col-sm-2 control-label">Field Name (System)</label>
+    <div class="col-sm-10">
+      <span>{{customObjectModelDefinition.fieldName}}</span>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="button" class="btn btn-default" ng-click="UpdateDefinition()">Update Definition</button>
+      <button type="button" class="btn btn-default" ng-click="RemoveDefinition()">Remove Definition</button>
+    </div>
+  </div>
+</form>
+<div class="col-md-offset-1">
+	<div ng-show="errorResponse">{{ errorResponse }}</div>
+	<div ng-show="successResponse">{{ successResponse }}</div>
+</div>
+
+<br/>
+<br/>
 {{ customObjectModelDefinition | json}}

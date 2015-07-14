@@ -36,6 +36,9 @@ Rails.application.routes.draw do
   get 'partials/customObjects/modelDefinitions/new.html' => 'angular#custom_object_model_definition_new'
   get 'partials/customObjects/modelDefinitions/get.html' => 'angular#custom_object_model_definition_get'
   get 'partials/customObjects/data/search.html' => 'angular#custom_object_data_search'
+  get 'partials/customObjects/data/new.html' => 'angular#custom_object_data_new'
   get 'partials/customObjects/data/get.html' => 'angular#custom_object_data_get'
   get 'partials/static/not-found.html' => 'angular#static_not_found'
+  get 'partials/static/navbar.html' => 'angular#static_navbar'
+  
 end

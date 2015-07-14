@@ -418,7 +418,7 @@ function CustomObjectsAPI () {
         function CreateCustomObjectFieldFailed(err){
           logger.log("CustomObjectsAPI.ValidateModelSuccess.CreateCustomObjectFieldFailed", appModes.DEBUG);
           var response = new Object();
-          response.customObjectModelFieldDefinition = customObjectModelFieldDefinition.ToJSON();
+          response.customObjectModelDefinition = customObjectModelFieldDefinition.ToJSON();
           response.customObject = customObject;
           response.info = err;
           res.status(500).send(response);
@@ -426,7 +426,7 @@ function CustomObjectsAPI () {
         function CreateCustomObjectFieldSuccess(){
           logger.log("CustomObjectsAPI.ValidateModelSuccess.CreateCustomObjectFieldSuccess", appModes.DEBUG);
           var response = new Object();
-          response.customObjectModelFieldDefinition = customObjectModelFieldDefinition.ToJSON();
+          response.customObjectModelDefinition = customObjectModelFieldDefinition.ToJSON();
           response.customObject = customObject;
           res.status(201).send(response);
         };
@@ -476,11 +476,18 @@ function CustomObjectsAPI () {
           customObjectModelField = params.customObject.modelDefinition[i];
         }
       }
+      var customObject = customObjects[0];
+      var customObjectModelFieldDefinition;
+      if (customObjectModelField.scope == "System"){
+        logger.log("CustomObjectsAPI.UpdateCustomObjectModelFieldDefinition.StartUpdateCustomObjectModelFieldDefinition - Cannot update SYSTEM Scope field", appModes.DEBUG);
+        
+      }
+      else{
+        customObjectModelField.name = req.body.name;
+        customObjectModelField.description = req.body.description;
+      }
       
-      customObjectModelField.name = req.body.name;
-      customObjectModelField.description = req.body.description;
-      logger.log(customObjectModelField, appModes.DEBUG);
-      var customObjectModelFieldDefinition = new CustomObjectModelFieldDefinition(customObjectModelField, params, "UPDATE");
+      customObjectModelFieldDefinition = new CustomObjectModelFieldDefinition(customObjectModelField, params, "UPDATE");
       customObjectModelFieldDefinition.ValidateModel(ValidateModelFailed, ValidateModelSuccess);
       function ValidateModelFailed(){
         logger.log("CustomObjectsAPI.UpdateCustomObjectModelFieldDefinition.StartUpdateCustomObjectModelFieldDefinition.ValidationFailed", appModes.DEBUG);
@@ -490,7 +497,6 @@ function CustomObjectsAPI () {
       }
       function ValidateModelSuccess(){
         logger.log("CustomObjectsAPI.UpdateCustomObjectModelFieldDefinition.StartUpdateCustomObjectModelFieldDefinition.ValidateModelSuccess", appModes.DEBUG);
-        var customObject = customObjects[0];
         // Replace the customObjectModelFieldDefinition in the array of modelDefinition items
         for (var i = 0; i < customObject.modelDefinition.length; i++) {
             if (customObject.modelDefinition[i]._id == customObjectModelFieldDefinition.ToJSON().data._id) {
@@ -503,18 +509,18 @@ function CustomObjectsAPI () {
         function UpdateCustomObjectFieldFailed(err) {
             logger.log("CustomObjectsAPI.UpdateCustomObjectModelFieldDefinition.StartUpdateCustomObjectModelFieldDefinition.ValidateModelSuccess.UpdateCustomObjectFieldFailed", appModes.DEBUG);
           var response = new Object();
-          response.customObjectModelFieldDefinition = customObjectModelFieldDefinition.ToJSON();
+          response.customObjectModelDefinition = customObjectModelFieldDefinition.ToJSON();
           response.customObject = customObject;
           response.info = err;
           res.status(500).send(response);
         }
-        function UpdateCustomObjectFieldSuccess() {
-            logger.log("CustomObjectsAPI.UpdateCustomObjectModelFieldDefinition.StartUpdateCustomObjectModelFieldDefinition.ValidateModelSuccess.UpdateCustomObjectFieldSuccess", appModes.DEBUG);
-          var response = new Object();
-          response.customObjectModelFieldDefinition = customObjectModelFieldDefinition.ToJSON();
-          response.customObject = customObject;
-          res.status(200).send(response);
-        };
+      };
+      function UpdateCustomObjectFieldSuccess() {
+        logger.log("CustomObjectsAPI.UpdateCustomObjectModelFieldDefinition.StartUpdateCustomObjectModelFieldDefinition.ValidateModelSuccess.UpdateCustomObjectFieldSuccess", appModes.DEBUG);
+        var response = new Object();
+        response.customObjectModelDefinition = customObjectModelFieldDefinition.ToJSON();
+        response.customObject = customObject;
+        res.status(200).send(response);
       };
     }
   };

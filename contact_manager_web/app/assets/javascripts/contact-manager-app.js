@@ -49,6 +49,10 @@ function($routeProvider) {
       templateUrl: 'partials/customObjects/data/search.html',
       controller: 'CustomObjectModelDataCtrl'
     }).
+  when('/application/account/:accountId/customObject/:customObjectId/data', {
+      templateUrl: 'partials/customObjects/data/new.html',
+      controller: 'CustomObjectModelDataCtrl'
+    }).
   when('/application/account/:accountId/customObject/:customObjectId/data/:customObjectDataId', {
       templateUrl: 'partials/customObjects/data/get.html',
       controller: 'CustomObjectModelDataCtrl'
@@ -61,8 +65,3 @@ function($routeProvider) {
       redirectTo: '/static/not-found'
     });
 }]);
-
-
-  // ,
-  // 'conmanFilters',
-  // 'conmanServices'

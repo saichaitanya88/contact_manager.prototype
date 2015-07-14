@@ -46,6 +46,7 @@ function CustomObjectModelFieldDefinition(data, params, validationMode){
   function ValidateName(callback){
     logger.log("CustomObjectModelFieldDefinition.ValidateName", appModes.DEBUG);
     errors.name = new Array();
+    if (!data.name) errors.name.push("Name must not be empty");
     //async.series([null,null],callback);
     for(var i = 0; i < params.customObject.modelDefinition.length; i++){
       logger.log(params.customObject.modelDefinition[i]);
@@ -65,6 +66,7 @@ function CustomObjectModelFieldDefinition(data, params, validationMode){
       return;
     }
     errors.fieldName = new Array();
+    if (!data.fieldName) errors.fieldName.push("FieldName cannot be empty")
     //async.series([null,null],callback);
     for(var i = 0; i < params.customObject.modelDefinition.length; i++){
       logger.log(params.customObject.modelDefinition[i]);
@@ -84,7 +86,6 @@ function CustomObjectModelFieldDefinition(data, params, validationMode){
     //async.series([null,null],callback);
     var validDataType = false;
     for(var i = 0; i < ValidDataTypes.length; i++){
-      logger.log(ValidDataTypes[i]);
       if (ValidDataTypes[i] == data.type){
         validDataType = true;
         break;
@@ -128,6 +129,7 @@ function CustomObjectModelFieldDefinition(data, params, validationMode){
     return JSON.stringify(this.ToJSON());
   }
   function getSystemName(name){
+    if (!name) return null;
     var customObjectName = name.replace(/[^a-zA-Z ]/g, "");
     var systemName = camelize(customObjectName);
     return systemName;
