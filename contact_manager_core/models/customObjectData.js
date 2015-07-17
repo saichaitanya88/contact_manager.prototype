@@ -94,6 +94,8 @@ function CustomObjectDataModel(data, params, validationMode){
   //["ObjectId", "String", "Date", "Number", "Boolean"];
   function validDataType(key, modelKeyDetails, params) {
   	logger.log("CustomObjectDataModel.validDataType", appModes.DEBUG);
+    if (params[key] === undefined) return true;
+    if (params[key] === null) return true;
     if (modelKeyDetails[key].type.toLowerCase() == "string") {
       if (getDataType(params[key]).toLowerCase() == modelKeyDetails[key].type.toLowerCase())
         return true;

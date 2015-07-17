@@ -10,6 +10,12 @@ function AccountsDataAccess () {
     logger.log("AccountsDataAccess.GetAccount", appModes.DEBUG)
     // Open the connection to the server
     MongoClient.connect("mongodb://localhost:27017/conman_dev", {native_parser:true}, function(err, db) {
+      if (err){
+        errorCallback(err);
+      }
+      if (db == null) {
+        errorCallback("DB is null"); 
+      }
       // Get the first db and do an update document on it
       var accountsCollection = db.collection('accounts');
       

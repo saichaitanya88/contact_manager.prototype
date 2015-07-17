@@ -1,18 +1,31 @@
 partials/customObjects/search.html
 <br/>
-<a ng-href="#/application/account/{{AuthParams.accountId}}/customObject">Create New CustomObject</a>
 <br/>
-Search Custom Objects <input ng-model="searchTerm" ng-change="SearchCustomObjects()" />
 
+<div class="input-group">
+  <input class='form-control' ng-model="searchTerm" ng-change="SearchCustomObjects()" />
+  <span class="input-group-addon">
+  	<a ng-click="SearchCustomObjects()" href=''><span class="glyphicon glyphicon-search"></a></span>
+  </span>
+  <span class="input-group-addon">
+  	<a ng-href="#/application/account/{{AuthParams.accountId}}/customObject"><span class="glyphicon glyphicon-plus"></span></a>
+  </span>
+</div>
 <div>
-	Displaying a total of {{ customObjects.length }} CustomObjects
+	Displaying a total of {{ customObjects.length }} Custom Objects
 </div>
-<div ng-repeat="customObject in customObjects">
-	<a ng-href="#/application/account/{{AuthParams.accountId}}/customObject/{{customObject._id}}">id: {{ customObject._id}}</a> <br/>
-	name: {{ customObject.name}} <br/>
-	description: {{ customObject.description}}
+<div ng-repeat="customObject in customObjects" style="border:2px solid;">
+	<div style="background-color:purple;">
+		<h3 style="margin:0px;color:white;" class="text-left">{{ customObject.name}}</h3>
+	</div>
+	<div>
+		<i>{{ customObject.description}}</i>
+	</div>
+	<a ng-href="#/application/account/{{AuthParams.accountId}}/customObject/{{customObject._id}}" class="btn-default btn"><span class="glyphicon glyphicon-pencil"></span></a>
+	<a ng-click="QuickDelete(customObject)" class="btn-default btn"><span class="glyphicon glyphicon-trash"></span></a>
+	<a ng-href="#/application/account/{{AuthParams.accountId}}/customObject/{{customObject._id}}/data/search" class="btn-default btn"><span class="glyphicon glyphicon-search"></span></a>
+	<a ng-href="#/application/account/{{AuthParams.accountId}}/customObject/{{customObject._id}}/data" class="btn-default btn"><span class="glyphicon glyphicon-list"></span></a>
 </div>
-
 <div ng-show="errorResponse">
 	{{ errorResponse }}
 </div>

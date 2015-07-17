@@ -19,13 +19,11 @@ Rails.application.routes.draw do
   put '/application/account/:accountId/customObject/:customObjectId/modelDefinition/:customObjectModelDefinitionId' => 'custom_object_model_definition#edit'
   delete '/application/account/:accountId/customObject/:customObjectId/modelDefinition/:customObjectModelDefinitionId' => 'custom_object_model_definition#delete'
   
-  get '/application/account/:accountId/customObject/:customObjectId/data/search' => 'custom_object_data#search'
+  post '/application/account/:accountId/customObject/:customObjectId/data/search' => 'custom_object_data#search'
   post '/application/account/:accountId/customObject/:customObjectId/data' => 'custom_object_data#create'
   get '/application/account/:accountId/customObject/:customObjectId/data/:customObjectDataId' => 'custom_object_data#get'
   put '/application/account/:accountId/customObject/:customObjectId/data/:customObjectDataId' => 'custom_object_data#edit'
   delete '/application/account/:accountId/customObject/:customObjectId/data/:customObjectDataId' => 'custom_object_data#delete'
-
-
 
   get 'partials/accounts/new.html' => 'angular#accounts_new'
   get 'partials/accounts/signin.html' => 'angular#accounts_signin'

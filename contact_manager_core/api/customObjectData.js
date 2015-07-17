@@ -213,7 +213,7 @@ function CustomObjectDataAPI () {
         if (customObjectParams[params.customObject.modelDefinition[i].fieldName] == null || customObjectParams[params.customObject.modelDefinition[i].fieldName] == undefined)
           customObjectParams[params.customObject.modelDefinition[i].fieldName] = customObjectData[params.customObject.modelDefinition[i].fieldName];
       }
-      logger.log(JSON.prettify(customObjectParams, null, 2), appModes.DEBUG);
+      // logger.log(JSON.prettify(customObjectParams, null, 2), appModes.DEBUG);
       params.customObjectData = customObjectParams;
       var customObjectDataModel = new CustomObjectDataModel(customObjectParams, params, "UPDATE");
       customObjectDataModel.ValidateModel(ValidateModelFailed, ValidateModelSuccess);

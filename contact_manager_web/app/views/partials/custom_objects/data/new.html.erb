@@ -1,2 +1,27 @@
 partials/customObjects/data/new.html
 
+
+<div class='row'>
+	<form novalidate class="form-horizontal" name="form" >
+    <div class="form-group" ng-repeat='field in customObject.modelDefinition' ng-hide='field.scope == "System"'>
+      <label for="name" class="col-sm-2 control-label">{{field.name}}</label>
+      <div class="col-sm-10">
+      	<input class="form-control" ng-model="field.value" ng-init='field.value = null' type='{{FieldType(field)}}'>
+      </div>
+    </div>
+    <hr />
+  	<div class="form-group">
+  		<div class="col-sm-offset-2 col-sm-10">
+  			<button type="button" class="btn btn-default" ng-disabled='!form.$valid' ng-click="Create()"><span ng-class="form.$dirty ? 'glyphicon glyphicon-floppy-disk' : 'glyphicon glyphicon-floppy-saved'"></span></button>
+  		</div>
+  	</div>
+  </form>
+</div>
+
+
+<div ng-show='DebugMode()' class="well">
+	<br/><br/><br/>
+	{{ customObject | json}}
+	<br/><br/><br/>
+	{{errorResponse | json}}
+</div>

@@ -11,23 +11,25 @@ contactManagerServices.factory('Account', function($http) {
 	function httpRequest(request, successCallback, errorCallback){
 		$http(request).success(function(data, status){successCallback(data, status);}).error(function(data, status){errorCallback(data, status);});
 	}
-  var Create = function(account, successCallback, errorCallback) {
-      httpRequest({method: "POST", url: "/application/account", data: account, headers: headers}, successCallback, errorCallback);
+  var Create = function(account, params, successCallback, errorCallback) {
+  	headers.SessionToken = params.SessionToken;
+    httpRequest({method: "POST", url: "/application/account", data: account, headers: headers}, successCallback, errorCallback);
   };
-  var SignIn = function(account, successCallback, errorCallback) {
-      httpRequest({method: "POST", url: "/application/account/signin", data: account, headers: headers}, successCallback, errorCallback);
+  var SignIn = function(account, params, successCallback, errorCallback) {
+  	headers.SessionToken = params.SessionToken;
+    httpRequest({method: "POST", url: "/application/account/signin", data: account, headers: headers}, successCallback, errorCallback);
   };
-  var Authenticate = function(account, successCallback, errorCallback) {
-  		headers.SessionToken = account.SessionToken;
-      httpRequest({method: "GET", url: "/application/account/"+account.accountId, data: account, headers: headers}, successCallback, errorCallback);
+  var Authenticate = function(account, params, successCallback, errorCallback) {
+		headers.SessionToken = params.SessionToken;
+    httpRequest({method: "GET", url: "/application/account/"+account.accountId, data: account, headers: headers}, successCallback, errorCallback);
   };
-  var Get = function(account, successCallback, errorCallback) {
-  		headers.SessionToken = account.SessionToken;
-      httpRequest({method: "GET", url: "/application/account/"+account.accountId, data: account, headers: headers}, successCallback, errorCallback);
+  var Get = function(account, params, successCallback, errorCallback) {
+		headers.SessionToken = params.SessionToken;
+    httpRequest({method: "GET", url: "/application/account/"+account.accountId, data: account, headers: headers}, successCallback, errorCallback);
   };
   var Update = function(account, params, successCallback, errorCallback) {
-  		headers.SessionToken = params.SessionToken;
-      httpRequest({method: "PUT", url: "/application/account/"+params.accountId, data: account, headers: headers}, successCallback, errorCallback);
+		headers.SessionToken = params.SessionToken;
+    httpRequest({method: "PUT", url: "/application/account/"+params.accountId, data: account, headers: headers}, successCallback, errorCallback);
   };
   return { Create: Create, SignIn: SignIn, Authenticate: Authenticate, Update: Update, Get: Get };
 });
@@ -59,6 +61,32 @@ contactManagerServices.factory('CustomObject', function($http) {
   return { Search: Search, Update: Update, Create: Create, Get: Get, Delete: Delete };
 });
 
+contactManagerServices.factory('CustomObjectData', function($http) {
+	function httpRequest(request, successCallback, errorCallback){
+		$http(request).success(function(data, status){successCallback(data, status);}).error(function(data, status){errorCallback(data, status);});
+	}
+	var Search = function(query, params, successCallback, errorCallback) {
+		headers.SessionToken = params.SessionToken;
+    httpRequest({method: "POST", url: "/application/account/"+params.accountId+"/customObject/"+params.customObjectId+"/data/search", data: query, headers: headers}, successCallback, errorCallback);
+  };
+  var Create = function(customObjectData, params, successCallback, errorCallback) {
+		headers.SessionToken = params.SessionToken;
+    httpRequest({method: "POST", url: "/application/account/"+params.accountId+"/customObject/"+params.customObjectId+"/data", data: customObjectData, headers: headers}, successCallback, errorCallback);
+  };
+  var Update = function(customObjectData, params, successCallback, errorCallback) {
+		headers.SessionToken = params.SessionToken;
+    httpRequest({method: "PUT", url: "/application/account/"+params.accountId+"/customObject/"+params.customObjectId+"/data/"+params.customObjectDataId, data: customObjectData, headers: headers}, successCallback, errorCallback);
+  };
+  var Get = function(customObjectData, params, successCallback, errorCallback) {
+		headers.SessionToken = params.SessionToken;
+    httpRequest({method: "Get", url: "/application/account/"+params.accountId+"/customObject/"+params.customObjectId+"/data/"+customObjectData._id, data: null, headers: headers}, successCallback, errorCallback);
+  };
+  var Delete = function(customObjectData, params, successCallback, errorCallback) {
+		headers.SessionToken = params.SessionToken;
+    httpRequest({method: "Delete", url: "/application/account/"+params.accountId+"/customObject/"+params.customObjectId+"/data/"+customObjectData._id, data: null, headers: headers}, successCallback, errorCallback);
+  };
+  return { Search: Search, Update: Update, Create: Create, Get: Get, Delete: Delete };
+});
 
 contactManagerServices.factory('CustomObjectModelDefinition', function($http) {
 	function httpRequest(request, successCallback, errorCallback){
@@ -94,28 +122,35 @@ contactManagerServices.factory('AppHelper', function($http, $cookies, $routePara
       SessionToken: $cookies.get("SessionToken"),
       customObjectId: $routeParams.customObjectId,
       customObjectModelDefinitionId: $routeParams.customObjectModelDefinitionId,
+      customObjectDataId: $routeParams.customObjectDataId
     };
   }
   var GetAccountUrl = function(){
-  	var url = "/#/application/account/" + GetAuthParams().accountId;
+  	var url = "#/application/account/" + GetAuthParams().accountId;
   	return url;
   }
   var GetCustomObjectUrl = function(){
   	if (!GetAuthParams().customObjectId) return "";
-  	var url = "/#/application/account/" + GetAuthParams().accountId + "/customObject/" + GetAuthParams().customObjectId
+  	var url = "#/application/account/" + GetAuthParams().accountId + "/customObject/" + GetAuthParams().customObjectId
   	return url;
   }
   var GetCustomObjectsModelDefinitionUrl = function(){
-  	var url = "/#/application/account/" + GetAuthParams().accountId + "/customObject/" + GetAuthParams().customObjectId + "/modelDefinition/" + GetAuthParams().customObjectModelDefinitionId
+  	var url = "#/application/account/" + GetAuthParams().accountId + "/customObject/" + GetAuthParams().customObjectId + "/modelDefinition/" + GetAuthParams().customObjectModelDefinitionId
   	return url;
   }
   var CreateCustomObjectDataUrl = function(){
-  	var url = "/#/application/account/" + GetAuthParams().accountId + "/customObject/" + GetAuthParams().customObjectId + "/data";
+  	var url = "#/application/account/" + GetAuthParams().accountId + "/customObject/" + GetAuthParams().customObjectId + "/data";
   	return url;
   }
   var SearchCustomObjectDataUrl = function(){
-  	var url = "/#/application/account/" + GetAuthParams().accountId + "/customObject/" + GetAuthParams().customObjectId + "/data/search";
+  	var url = "#/application/account/" + GetAuthParams().accountId + "/customObject/" + GetAuthParams().customObjectId + "/data/search";
   	return url;
+  }
+  var DebugMode = function(){
+  	if (localStorage.getItem("debug")){
+  		return true;
+  	}
+  	return false;
   }
   return { GetAuthParams: GetAuthParams, GetAccountUrl: GetAccountUrl, GetCustomObjectUrl: GetCustomObjectUrl, 
   	GetCustomObjectsModelDefinitionUrl: GetCustomObjectsModelDefinitionUrl, CreateCustomObjectDataUrl: CreateCustomObjectDataUrl,

@@ -43,7 +43,6 @@ class AccountController < ApplicationController
   end
 
   def edit
-    debugger
     accountId = request.params['accountId']
     credentials = request.params['account']
     path = "/application/account/#{accountId}"

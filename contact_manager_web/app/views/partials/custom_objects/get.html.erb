@@ -1,74 +1,83 @@
-partials/customObjects/get.html
+<!-- partials/customObjects/get.html
 <br/>
 Edit page for the customObject 
-<br/>
-<form novalidate class="form-horizontal" name="form" >
-  <div class="form-group">
-    <label for="name" class="col-sm-2 control-label">Name</label>
-    <div class="col-sm-10">
-    	<input type="text" class="form-control" required name="name" ng-model="customObject.name">
-    	<div ng-show="form.name.$error.required">Name is required</div>
-      <div ng-show="errorResponse.customObject.errors.name.length > 0">
-        <div ng-repeat="error in errorResponse.customObject.errors.name">
-          <div>{{error}}</div>
+<br/> -->
+<div class="row">
+  <form novalidate class="form-horizontal" name="form" >
+    <div class="form-group">
+      <label for="name" class="col-sm-2 control-label">Name</label>
+      <div class="col-sm-10">
+      	<input type="text" class="form-control" required name="name" ng-model="customObject.name">
+      	<div ng-show="form.name.$error.required">Name is required</div>
+        <div ng-show="errorResponse.customObject.errors.name.length > 0">
+          <div ng-repeat="error in errorResponse.customObject.errors.name">
+            <div>{{error}}</div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="form-group">
-    <label for="description" class="col-sm-2 control-label">Description</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control" name="description" ng-model="customObject.description">
-      <div ng-show="form.description.$error.required">Name is required</div>
-      <div ng-show="errorResponse.customObject.errors.description.length > 0">
-        <div ng-repeat="error in errorResponse.customObject.errors.description">
-          <div>{{error}}</div>
+    <div class="form-group">
+      <label for="description" class="col-sm-2 control-label">Description</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" name="description" ng-model="customObject.description">
+        <div ng-show="form.description.$error.required">Name is required</div>
+        <div ng-show="errorResponse.customObject.errors.description.length > 0">
+          <div ng-repeat="error in errorResponse.customObject.errors.description">
+            <div>{{error}}</div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-      <button type="button" class="btn btn-default" ng-disabled='!form.$valid' ng-click="UpdateCustomObject()">
-      	<span ng-class="form.$dirty ? 'glyphicon glyphicon-floppy-disk' : 'glyphicon glyphicon-floppy-saved'"></span>
-      </button>
-      <button type="button" class="btn btn-default" ng-click="DeleteCustomObject()"><span class="glyphicon glyphicon-trash"></span></button>
-      <div ng-show="form.$invalid">Please complete all fields before submitting</div>
-      <a class="btn btn-default" href="" ng-href="{{AppHelper.CreateCustomObjectDataUrl()}}"><span class="glyphicon glyphicon-th-list"></span></a>
-      <a class="btn btn-default" href="" ng-href="{{AppHelper.SearchCustomObjectDataUrl()}}"><span class="glyphicon glyphicon-search"></span></a>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="button" class="btn btn-default" ng-disabled='!form.$valid' ng-click="UpdateCustomObject()">
+        	<span ng-class="form.$dirty ? 'glyphicon glyphicon-floppy-disk' : 'glyphicon glyphicon-floppy-saved'"></span>
+        </button>
+        <button type="button" class="btn btn-default" ng-click="DeleteCustomObject()"><span class="glyphicon glyphicon-trash"></span></button>
+        <div ng-show="form.$invalid">Please complete all fields before submitting</div>
+        <a class="btn btn-default" href="" ng-href="{{AppHelper.CreateCustomObjectDataUrl()}}"><span class="glyphicon glyphicon-th-list"></span></a>
+        <a class="btn btn-default" href="" ng-href="{{AppHelper.SearchCustomObjectDataUrl()}}"><span class="glyphicon glyphicon-search"></span></a>
+      </div>
     </div>
-  </div>
-  <hr />
-  <div class="form-group">
-  	<div class="col-sm-2"></div>
-  	<div class='col-sm-10' style="margin:auto;">
-  		 <table class="table" >
-		  	<thead>
-		  		<tr>
-		  			<th>Field Name</th>
-		  			<th>Data Type</th>
-		  			<th></th>
-		  		</tr>
-		  	</thead>
-		  	<tbody>
-		  		<tr ng-repeat="field in customObject.modelDefinition">
-		  			<td>{{field.name}}</td>
-		  			<td>{{field.type}}</td>
-		  			<td>
-		  				<a ng-href="#/application/account/{{AuthParams.accountId}}/customObject/{{customObject._id}}/modelDefinition/{{field._id}}"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-		  			</td>
-		  		</tr>
-		  	</tbody>
-		  </table>
+    <div class="form-group">
+      <small class="col-sm-10 col-sm-offset-2">
+        <span>Created At: {{customObject.createdAt}}</span>
+        <span>Updated At: {{customObject.updatedAt}}</span>
+        <span>Created By: {{customObject.createdBy}}</span>
+        <span>Updated By: {{customObject.updatedBy}}</span>
+      </small>
+    </div>
+    <hr />
+    <div class="form-group">
+    	<div class="col-sm-2"></div>
+    	<div class='col-sm-10' style="margin:auto;">
+    		 <table class="table" >
+  		  	<thead>
+  		  		<tr>
+  		  			<th>Field Name</th>
+  		  			<th>Data Type</th>
+  		  			<th></th>
+  		  		</tr>
+  		  	</thead>
+  		  	<tbody>
+  		  		<tr ng-repeat="field in customObject.modelDefinition">
+  		  			<td>{{field.name}}</td>
+  		  			<td>{{field.type}}</td>
+  		  			<td>
+  		  				<a ng-href="#/application/account/{{AuthParams.accountId}}/customObject/{{customObject._id}}/modelDefinition/{{field._id}}"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+  		  			</td>
+  		  		</tr>
+  		  	</tbody>
+  		  </table>
+    	</div>
   	</div>
-	</div>
-	<div class="form-group">
-		<div class="col-sm-offset-2 col-sm-10">
-			<a type="button" class="btn-default btn" ng-href="#/application/account/{{AuthParams.accountId}}/customObject/{{customObject._id}}/modelDefinition"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> New Field</a>
-		</div>
-	</div>
-</form>
-
+  	<div class="form-group">
+  		<div class="col-sm-offset-2 col-sm-10">
+  			<a type="button" class="btn-default btn" ng-href="#/application/account/{{AuthParams.accountId}}/customObject/{{customObject._id}}/modelDefinition"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span></a>
+  		</div>
+  	</div>
+  </form>
+</div>
 <div class="col-md-offset-1" ng-show="errorResponse || successResponse">
   DEBUG: <br/>
 	<div ng-show="errorResponse">{{ errorResponse }}</div>
