@@ -8,7 +8,7 @@ partials/customObjects/search.html
   	<a ng-click="SearchCustomObjects()" href=''><span class="glyphicon glyphicon-search"></a></span>
   </span>
   <span class="input-group-addon">
-  	<a ng-href="#/application/account/{{AuthParams.accountId}}/customObject"><span class="glyphicon glyphicon-plus"></span></a>
+  	<a ng-href="#/application/account/{{AppHelper.GetAuthParams().accountId}}/customObject"><span class="glyphicon glyphicon-plus"></span></a>
   </span>
 </div>
 <div>
@@ -22,11 +22,13 @@ partials/customObjects/search.html
 	<div>
 		<i>{{ customObject.description}}</i>
 	</div>
-	<a ng-href="#/application/account/{{AuthParams.accountId}}/customObject/{{customObject._id}}" class="btn-default btn"><span class="glyphicon glyphicon-pencil"></span></a>
+	<a ng-href="#/application/account/{{AppHelper.GetAuthParams().accountId}}/customObject/{{customObject._id}}" class="btn-default btn"><span class="glyphicon glyphicon-pencil"></span></a>
 	<a ng-click="QuickDelete(customObject)" class="btn-default btn"><span class="glyphicon glyphicon-trash"></span></a>
-	<a ng-href="#/application/account/{{AuthParams.accountId}}/customObject/{{customObject._id}}/data/search" class="btn-default btn"><span class="glyphicon glyphicon-search"></span></a>
-	<a ng-href="#/application/account/{{AuthParams.accountId}}/customObject/{{customObject._id}}/data" class="btn-default btn"><span class="glyphicon glyphicon-list"></span></a>
+	<a ng-href="#/application/account/{{AppHelper.GetAuthParams().accountId}}/customObject/{{customObject._id}}/data/search" class="btn-default btn"><span class="glyphicon glyphicon-search"></span></a>
+	<a ng-href="#/application/account/{{AppHelper.GetAuthParams().accountId}}/customObject/{{customObject._id}}/data" class="btn-default btn"><span class="glyphicon glyphicon-list"></span></a>
 </div>
+
+
 <div ng-show="errorResponse">
 	{{ errorResponse }}
 </div>

@@ -5,31 +5,39 @@ partials/customObjects/data/search.html
 	<form novalidate class="form-horizontal" name="form" >
     <div class="form-group" ng-repeat='field in customObject.modelDefinition'>
       <label for="name" class="col-sm-2 control-label">{{field.name}}</label>
-      <div class="col-sm-10">
-      	<div ng-show='field.type == "Date"'>
+      <div class="col-sm-10" ng-switch on="field.type">
+      	<div ng-switch-when="Date">
       		<div class='row'>
 		    		<div class="col-sm-6">
 		    			<div class="input-group">
-			    			<span class="input-group-addon">Start</span>
-			    			<input class="form-control" type='date' ng-model='field.value_start' />
-		    			</div>
+		    				<span class="input-group-addon">Start</span>
+		            <input type="date" class="form-control" datepicker-popup ng-model="field.value_start" is-open="AppHelper.DatePicker.Opened[field.$$hashKey + 's']" datepicker-options="AppHelper.DatePicker.Options" date-disabled="" close-text="Close" />
+		            <span class="input-group-btn">
+		              <button type="button" class="btn btn-default" ng-click="AppHelper.DatePicker.Open($event, field.$$hashKey + 's')"><i class="glyphicon glyphicon-calendar"></i></button>
+	            	</span>
+		          </div>
 		    		</div>
 		    		<div class="col-sm-6">
 		    			<div class="input-group">
 			    			<span class="input-group-addon">End</span>
-			    			<input class="form-control" type='date' ng-model='field.value_end' />
+		            <input type="date" class="form-control" datepicker-popup ng-model="field.value_end" is-open="AppHelper.DatePicker.Opened[field.$$hashKey + 'e']" datepicker-options="AppHelper.DatePicker.Options" date-disabled="" close-text="Close" />
+		            <span class="input-group-btn">
+		              <button type="button" class="btn btn-default" ng-click="AppHelper.DatePicker.Open($event, field.$$hashKey + 'e')"><i class="glyphicon glyphicon-calendar"></i></button>
+	            	</span>
 		    			</div>
 						</div>
 					</div>
 				</div>
-      	<div ng-show='field.type == "String"'>
+      	<div ng-switch-when="String">
 					<input class="form-control" type='text' ng-model='field.value' />
 				</div>
-				<div ng-show='field.type == "ObjectId"'>
+				<div ng-switch-when="ObjectId">
 					<input class="form-control" type='text' ng-model='field.value' />
 				</div>
-				<div ng-show='field.type == "Boolean"'>
-					<input class="form-control" type='checkbox' ng-model='field.value' />
+				<div ng-switch-when="Boolean">
+					<div class="pull-left">
+						<input class="form-control" type='checkbox' ng-model='field.value' />
+					</div>
 				</div>
       </div>
     </div>
@@ -40,7 +48,6 @@ partials/customObjects/data/search.html
   	</div>
   </form>
 </div>
-
 <br/><br/><br/>
 DATA ARRAY:
 <br/><br/><br/>

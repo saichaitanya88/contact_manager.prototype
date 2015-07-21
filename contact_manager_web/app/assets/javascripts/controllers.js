@@ -59,7 +59,7 @@ contactManagerControllers.controller('CustomObjectsCtrl', ['$scope', '$http', '$
     $scope.SearchCustomObjects = function() {
       CustomObject.Search({
         name: $scope.searchTerm
-      }, $scope.AuthParams, function(data, status) {
+      }, $scope.AppHelper.GetAuthParams(), function(data, status) {
         $scope.customObjects = data.customObjects;
         $scope.customObjectsCount = data.count;
         $scope.errorResponse = null;
@@ -96,7 +96,7 @@ contactManagerControllers.controller('CustomObjectsCtrl', ['$scope', '$http', '$
     }
     $scope.DeleteCustomObject = function() {
       CustomObject.Delete($scope.customObject, $scope.AppHelper.GetAuthParams(), function(data, status) {
-        $location.path("/#/application/account/" + $scope.AppHelper.GetAuthParams().accountId + "/customObjects");
+        $location.path("/application/account/" + $scope.AppHelper.GetAuthParams().accountId + "/customObjects");
       }, function(data, status) {
         $scope.errorResponse = JSON.stringify(data, null, 2);
       });
@@ -121,14 +121,14 @@ contactManagerControllers.controller('CustomObjectModelDefinitionCtrl', ['$scope
     $scope.GetCustomObjectModelDefinition = function() {
       CustomObjectModelDefinition.Get({
         _id: $routeParams.customObjectModelDefinitionId
-      }, $scope.AuthParams, function(data, status) {
+      }, $scope.AppHelper.GetAuthParams(), function(data, status) {
         $scope.customObjectModelDefinition = data[0].modelDefinition[0];
       }, function(data, status) {
         $scope.errorResponse = JSON.stringify(data, null, 2);
       });
     }
     $scope.UpdateDefinition = function() {
-      CustomObjectModelDefinition.Update($scope.customObjectModelDefinition, $scope.AuthParams, function(data, status) {
+      CustomObjectModelDefinition.Update($scope.customObjectModelDefinition, $scope.AppHelper.GetAuthParams(), function(data, status) {
         $scope.customObjectModelDefinition = data.customObjectModelDefinition.data;
         $scope.form.$setPristine();
       }, function(data, status) {
@@ -136,15 +136,15 @@ contactManagerControllers.controller('CustomObjectModelDefinitionCtrl', ['$scope
       });
     }
     $scope.CreateDefinition = function() {
-      CustomObjectModelDefinition.Create($scope.customObjectModelDefinition, $scope.AuthParams, function(data, status) {
-        $location.path("/#/application/account/" + $scope.AppHelper.GetAuthParams().accountId + "/customObject/" + GetAuthParams().customObjectId + "/modelDefinition/" + customObjectModelDefinitionId);
+      CustomObjectModelDefinition.Create($scope.customObjectModelDefinition, $scope.AppHelper.GetAuthParams(), function(data, status) {
+        $location.path("/application/account/" + $scope.AppHelper.GetAuthParams().accountId + "/customObject/" + GetAuthParams().customObjectId + "/modelDefinition/" + customObjectModelDefinitionId);
       }, function(data, status) {
         $scope.errorResponse = JSON.stringify(data, null, 2);
       });
     }
     $scope.RemoveDefinition = function() {
-      CustomObjectModelDefinition.Delete($scope.customObjectModelDefinition, $scope.AuthParams, function(data, status) {
-        $location.path('/'+AppHelper.GetCustomObjectsUrl());
+      CustomObjectModelDefinition.Delete($scope.customObjectModelDefinition, $scope.AppHelper.GetAuthParams(), function(data, status) {
+        $location.path("/application/account/" + $scope.AppHelper.GetAuthParams().accountId + "/customObject/" + $scope.AppHelper.GetAuthParams().customObjectId);
       }, function(data, status) {
         $scope.errorResponse = JSON.stringify(data, null, 2);
       });
@@ -160,17 +160,16 @@ contactManagerControllers.controller('CustomObjectModelDefinitionCtrl', ['$scope
     if ($routeParams.customObjectModelDefinitionId != null) {
       $scope.GetCustomObjectModelDefinition();
     }
-    $scope.AppHelper = AppHelper;
   }
 ]);
 
-contactManagerControllers.controller('CustomObjectModelDataCtrl', ['$scope', '$http', '$routeParams', '$location','AppHelper', 'CustomObject', 'CustomObjectData',
+contactManagerControllers.controller('CustomObjectDataCtrl', ['$scope', '$http', '$routeParams', '$location','AppHelper', 'CustomObject', 'CustomObjectData',
 	function($scope, $http, $routeParams, $location, AppHelper, CustomObject, CustomObjectData) {
-		$scope.AuthParams = AppHelper.GetAuthParams();
+    $scope.AppHelper = AppHelper;
 		$scope.GetCustomObject = function() {
       CustomObject.Get({
         _id: $routeParams.customObjectId
-      }, $scope.AuthParams, function(data, status) {
+      }, $scope.AppHelper.GetAuthParams(), function(data, status) {
         $scope.customObject = data.customObject[0];
         $scope.customObjectDataKeys = [];
         for(var i = 0; i < $scope.customObject.modelDefinition.length; i++){
@@ -189,7 +188,7 @@ contactManagerControllers.controller('CustomObjectModelDataCtrl', ['$scope', '$h
     $scope.GetCustomObjectData = function() {
       CustomObjectData.Get({
         _id: $routeParams.customObjectDataId
-      }, $scope.AuthParams, function(data, status) {
+      }, $scope.AppHelper.GetAuthParams(), function(data, status) {
         $scope.customObjectData = data.customObjectData;
       }, function(data, status) {
         $scope.errorResponse = JSON.stringify(data, null, 2);
@@ -238,8 +237,8 @@ contactManagerControllers.controller('CustomObjectModelDataCtrl', ['$scope', '$h
 	    		customObjectData[customObject.modelDefinition[i].fieldName] = new Boolean(customObject.modelDefinition[i].value);
 	    	}
     	}
-    	CustomObjectData.Create(customObjectData, $scope.AuthParams, function(data, status) {
-    		$location.path('/'+AppHelper.GetCustomObjectUrl());
+    	CustomObjectData.Create(customObjectData, $scope.AppHelper.GetAuthParams(), function(data, status) {
+    		$location.path("/application/account/" + $scope.AppHelper.GetAuthParams().accountId + "/customObject/" + $scope.AppHelper.GetAuthParams().customObjectId);
     	}, function(data, status){
     		$scope.errorResponse = data;
     	});
@@ -262,7 +261,7 @@ contactManagerControllers.controller('CustomObjectModelDataCtrl', ['$scope', '$h
 						dtQuery['$gte'] = $scope.customObject.modelDefinition[i].value_start;
 					}
 					if ($scope.customObject.modelDefinition[i].value_end){
-						dtQuery['$lte'] = $scope.customObject.modelDefinition[i].value_start;
+						dtQuery['$lte'] = $scope.customObject.modelDefinition[i].value_end;
 					}
 					if (Object.keys(dtQuery).length > 0)
 						query[$scope.customObject.modelDefinition[i].fieldName] = dtQuery;
@@ -276,7 +275,7 @@ contactManagerControllers.controller('CustomObjectModelDataCtrl', ['$scope', '$h
 				}
 			}
 			console.log(JSON.stringify(query, null, 2));
-			CustomObjectData.Search(query, $scope.AuthParams, function(data, status) {
+			CustomObjectData.Search(query, $scope.AppHelper.GetAuthParams(), function(data, status) {
 	        $scope.customObjectData = data;
 	      }, function(data, status) {
 	        $scope.errorResponse = JSON.stringify(data, null, 2);
@@ -291,7 +290,7 @@ contactManagerControllers.controller('CustomObjectModelDataCtrl', ['$scope', '$h
 			return url;
 		}
 		$scope.Update = function(){
-			CustomObjectData.Update($scope.customObjectData, $scope.AuthParams, function(data, status) {
+			CustomObjectData.Update($scope.customObjectData, $scope.AppHelper.GetAuthParams(), function(data, status) {
     		$scope.customObjectData = data.customObjectData.data;
         $scope.form.$setPristine();
     	}, function(data, status){
@@ -299,15 +298,15 @@ contactManagerControllers.controller('CustomObjectModelDataCtrl', ['$scope', '$h
     	});
 		}
     $scope.QuickDeleteCustomObjectData = function(id){
-      CustomObjectData.Delete({_id: id}, $scope.AuthParams, function(data, status) {
+      CustomObjectData.Delete({_id: id}, $scope.AppHelper.GetAuthParams(), function(data, status) {
         $scope.Search();
       }, function(data, status){
         $scope.errorResponse = data;
       });
     }
 		$scope.Delete = function(){
-			CustomObjectData.Delete({_id: $scope.customObjectData._id}, $scope.AuthParams, function(data, status) {
-    		$location.path('/'+AppHelper.GetCustomObjectUrl());
+			CustomObjectData.Delete({_id: $scope.customObjectData._id}, $scope.AppHelper.GetAuthParams(), function(data, status) {
+    		$location.path("/application/account/" + $scope.AppHelper.GetAuthParams().accountId + "/customObject/" + $scope.AppHelper.GetAuthParams().customObjectId);
     	}, function(data, status){
     		$scope.errorResponse = data;
     	});
@@ -320,15 +319,9 @@ contactManagerControllers.controller('StaticCtrl', ['$scope', '$http', "AppHelpe
 
 contactManagerControllers.controller('MiscCtrl', ['$scope', '$http', "AppHelper", "Account", "$location", "$cookies", 
 	function($scope, $http, AppHelper, Account, $location, $cookies) {
-	$scope.getAuthParams = AppHelper.GetAuthParams;
+    //sd
+	$scope.AppHelper = AppHelper;
 	$scope.BaseUrl = "/";
-	$scope.LoggedIn = false;
-  $scope.AccountUrl = function() {
-  	if ($scope.LoggedIn)
-    	return AppHelper.GetAccountUrl();
-    else 
-    	return '#/'
-  }
   $scope.CustomObjectUrl = function() {
     return AppHelper.GetCustomObjectUrl();
   }
@@ -337,16 +330,17 @@ contactManagerControllers.controller('MiscCtrl', ['$scope', '$http', "AppHelper"
   }
   $scope.LoginPath = "/#/application/account/signin";
   $scope.Authenticate = function() {
-	  Account.Authenticate($scope.getAuthParams(), $scope.getAuthParams(),
+	  Account.Authenticate($scope.AppHelper.GetAuthParams(), $scope.AppHelper.GetAuthParams(),
 			function(data, status){
 				$scope.LoggedIn = true;
 				if ($location.path() == '/' || $location.path() == '/application/account' || $location.path() == '/application/account/signin' ) {
-					$location.path($scope.AccountUrl());
+					$location.path("/application/account/" + $scope.AppHelper.GetAuthParams().accountId);
 				}
 			 //  if ($location.path() != '/' && $location.path() != '/application/account' && $location.path() != '/application/account/signin' ) {
 				// }
 			},
 			function(data, status){
+        $scope.LoggedIn = false;
 				if ($location.path() != '/application/account/signin')
 					$scope.LogOut();
 			}

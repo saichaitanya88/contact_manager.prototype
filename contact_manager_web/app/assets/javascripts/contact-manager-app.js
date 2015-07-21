@@ -4,7 +4,7 @@
 /* App Module */
 
 var contactManagerApp = angular.module('contactManagerApp', [
-  'ngRoute', 'ngCookies','contactManagerControllers', 'contactManagerServices'
+  'ngRoute', 'ngCookies','contactManagerControllers', 'contactManagerServices', 'ui.bootstrap'
 ]);
 contactManagerApp.config(['$routeProvider',
 function($routeProvider) {
@@ -47,15 +47,15 @@ function($routeProvider) {
     }).
   when('/application/account/:accountId/customObject/:customObjectId/data/search', {
       templateUrl: 'partials/customObjects/data/search.html',
-      controller: 'CustomObjectModelDataCtrl'
+      controller: 'CustomObjectDataCtrl'
     }).
   when('/application/account/:accountId/customObject/:customObjectId/data', {
       templateUrl: 'partials/customObjects/data/new.html',
-      controller: 'CustomObjectModelDataCtrl'
+      controller: 'CustomObjectDataCtrl'
     }).
   when('/application/account/:accountId/customObject/:customObjectId/data/:customObjectDataId', {
       templateUrl: 'partials/customObjects/data/get.html',
-      controller: 'CustomObjectModelDataCtrl'
+      controller: 'CustomObjectDataCtrl'
     }).
     when('/static/not-found', {
       templateUrl: 'partials/static/not-found.html',

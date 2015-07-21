@@ -125,43 +125,24 @@ contactManagerServices.factory('AppHelper', function($http, $cookies, $routePara
       customObjectDataId: $routeParams.customObjectDataId
     };
   }
-  var GetAccountUrl = function(){
-  	var url = "#/application/account/" + GetAuthParams().accountId;
-  	return url;
-  }
-  var GetCustomObjectUrl = function(){
-  	if (!GetAuthParams().customObjectId) return "";
-  	var url = "/#/application/account/" + GetAuthParams().accountId + "/customObject/" + GetAuthParams().customObjectId
-    console.log(url);
-  	return url;
-  }
-  var GetCustomObjectsModelDefinitionUrl = function(id){
-    var customObjectModelDefinitionId = GetAuthParams().customObjectModelDefinitionId;
-    if (id)
-    {
-      customObjectModelDefinitionId = id;
-    }
-  	var url = "#/application/account/" + GetAuthParams().accountId + "/customObject/" + GetAuthParams().customObjectId + "/modelDefinition/" + customObjectModelDefinitionId
-  	return url;
-  }
-  var CreateCustomObjectDataUrl = function(){
-  	var url = "#/application/account/" + GetAuthParams().accountId + "/customObject/" + GetAuthParams().customObjectId + "/data";
-  	return url;
-  }
-  var SearchCustomObjectDataUrl = function(){
-  	var url = "#/application/account/" + GetAuthParams().accountId + "/customObject/" + GetAuthParams().customObjectId + "/data/search";
-  	return url;
-  }
   var IsDebugMode = function(){
   	if (localStorage.getItem("debug")){
   		return true;
   	}
   	return false;
   }
-  var GetGrid = function(customObjects){
-    return [[1,2,3],[4,5,6],[7,8,9]];
+
+  var DatePicker = {
+    Options : { },
+    Opened : {},
+    Open : function($event, name) {
+      $event.preventDefault();
+      $event.stopPropagation();
+      for(var i = 0; i < Object.keys(this.Opened).length; i++){
+        this.Opened[Object.keys(this.Opened)[i]] = false;
+      }
+      this.Opened[name] = true;
+    }
   }
-  return { GetAuthParams: GetAuthParams, GetAccountUrl: GetAccountUrl, GetCustomObjectUrl: GetCustomObjectUrl, 
-  	GetCustomObjectsModelDefinitionUrl: GetCustomObjectsModelDefinitionUrl, CreateCustomObjectDataUrl: CreateCustomObjectDataUrl,
-  	SearchCustomObjectDataUrl: SearchCustomObjectDataUrl, GetGrid: GetGrid };
+  return { GetAuthParams: GetAuthParams, IsDebugMode: IsDebugMode , DatePicker: DatePicker};
 });
