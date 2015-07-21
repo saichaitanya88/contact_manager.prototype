@@ -47,14 +47,21 @@ DATA ARRAY:
 <table class="table">
 	<thead>
 		<tr>
-			<th></th>
+			<th ng-repeat="def in customObject.modelDefinition" ng-show="def.scope != 'System'">
+				{{def.name}}
+			</th>
 			<th></th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr ng-repeat='data in customObjectData.customObjectData'>
-			<td>{{data | json}}</td>
-			<td><a href="{{CustomObjectDataUrl(data)}}">Edit</a></td>
+			<td ng-repeat="def in customObject.modelDefinition" ng-show="def.scope != 'System'">
+				{{ data[def.fieldName]}}
+			</td>
+			<td>
+				<a class="btn btn-default" href="{{CustomObjectDataUrl(data)}}"><span class="glyphicon glyphicon-pencil"></span></a>
+				<button class="btn btn-default" ng-click="QuickDeleteCustomObjectData(data._id)"><span class="glyphicon glyphicon-trash"></span></button>
+			</td>
 		</tr>
 	</tbody>
 </table>

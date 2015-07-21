@@ -25,3 +25,9 @@
 }
 
 h1, h2, h3, h4, h5, h6 { text-align: center; }
+
+.view-body { margin-top:10px; }
+
+.search-item { border:2px solid; margin: 10px;}
+
+.search-heading { background-color:purple; }

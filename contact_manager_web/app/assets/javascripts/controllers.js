@@ -3,10 +3,9 @@ var contactManagerControllers = angular.module('contactManagerControllers', []);
 
 contactManagerControllers.controller('AccountCtrl', ['$scope', '$http', '$cookies', '$location', 'Account', "AppHelper",
   function($scope, $http, $cookies, $location, Account, AppHelper) {
-    $scope.AuthParams = AppHelper.GetAuthParams();
-    $scope.DebugMode = AppHelper.DebugMode;
+    $scope.AppHelper = AppHelper;
     if ($cookies.get("AccountId")){
-    	Account.Get({accountId : $cookies.get("AccountId")}, $scope.AuthParams, function(data, status){
+    	Account.Get({accountId : $cookies.get("AccountId")}, $scope.AppHelper.GetAuthParams(), function(data, status){
     		$scope.account = data.account;
     	}, function(data, status){
     		console.log(data);
@@ -14,7 +13,7 @@ contactManagerControllers.controller('AccountCtrl', ['$scope', '$http', '$cookie
     	})
     }
     $scope.CreateAccount = function() {
-      Account.Create($scope.account, $scope.AuthParams, function(data, status) {
+      Account.Create($scope.account, $scope.AppHelper.GetAuthParams(), function(data, status) {
         $scope.successResponse = data;
         // Sign the user in automatically
         $scope.SignInAccount();
@@ -27,7 +26,7 @@ contactManagerControllers.controller('AccountCtrl', ['$scope', '$http', '$cookie
         email: $scope.account.email,
         password: $scope.account.password
       }
-      Account.SignIn(credentials, $scope.AuthParams, function(data, status) {
+      Account.SignIn(credentials, $scope.AppHelper.GetAuthParams(), function(data, status) {
         $cookies.put('SessionToken', data.session.token);
         $cookies.put('AccountId', data.session.accountId);
         $location.path("/application/account/" + data.session.accountId);
@@ -39,10 +38,10 @@ contactManagerControllers.controller('AccountCtrl', ['$scope', '$http', '$cookie
       $scope.EditAccount = !$scope.EditAccount;
     }
     $scope.UpdateAccount = function() {
-      Account.Update($scope.account, $scope.AuthParams, function(data, status) {
+      Account.Update($scope.account, $scope.AppHelper.GetAuthParams(), function(data, status) {
         $scope.successResponse = JSON.stringify(data, null, 2);
         // Sign the user in automatically
-        $scope.SignInAccount();
+        $scope.form.$setPristine();
       }, function(data, status) {
         $scope.errorResponse = JSON.stringify(data, null, 2);
       });
@@ -55,7 +54,6 @@ contactManagerControllers.controller('CustomObjectsCtrl', ['$scope', '$http', '$
   function($scope, $http, $cookies, $location, $routeParams, Account, CustomObject, AppHelper) {
     $scope.searchTerm = '';
     $scope.customObjects = [];
-    $scope.AuthParams = AppHelper.GetAuthParams();
     $scope.DebugMode = AppHelper.DebugMode;
     $scope.AppHelper = AppHelper;
     $scope.SearchCustomObjects = function() {
@@ -70,8 +68,8 @@ contactManagerControllers.controller('CustomObjectsCtrl', ['$scope', '$http', '$
       });
     }
     $scope.CreateCustomObject = function() {
-      CustomObject.Create($scope.customObject, $scope.AuthParams, function(data, status) {
-        $location.path("/application/account/" + $scope.AuthParams.accountId + "/customObject/" + data.customObject.data._id);
+      CustomObject.Create($scope.customObject, scope.AppHelper.GetAuthParams(), function(data, status) {
+        $location.path("/application/account/" + scope.AppHelper.GetAuthParams().accountId + "/customObject/" + data.customObject.data._id);
       }, function(data, status) {
         $scope.errorResponse = JSON.stringify(data, null, 2);
       });
@@ -80,7 +78,7 @@ contactManagerControllers.controller('CustomObjectsCtrl', ['$scope', '$http', '$
     $scope.GetCustomObject = function() {
       CustomObject.Get({
         _id: $routeParams.customObjectId
-      }, $scope.AuthParams, function(data, status) {
+      }, $scope.AppHelper.GetAuthParams(), function(data, status) {
         $scope.customObject = data.customObject[0];
       }, function(data, status) {
         $scope.errorResponse = JSON.stringify(data, null, 2);
@@ -90,22 +88,21 @@ contactManagerControllers.controller('CustomObjectsCtrl', ['$scope', '$http', '$
       $scope.GetCustomObject();
     }
     $scope.UpdateCustomObject = function() {
-      CustomObject.Update($scope.customObject, $scope.AuthParams, function(data, status) {
-        //$location.path("/application/account/" + $scope.AuthParams.accountId+ "/customObject/" + data.customObject.data._id);
+      CustomObject.Update($scope.customObject, $scope.AppHelper.GetAuthParams(), function(data, status) {
         $scope.form.$setPristine();
       }, function(data, status) {
         $scope.errorResponse = JSON.stringify(data, null, 2);
       });
     }
     $scope.DeleteCustomObject = function() {
-      CustomObject.Delete($scope.customObject, $scope.AuthParams, function(data, status) {
-        $location.path(AppHelper.GetAccountUrl() + "/customObjects");
+      CustomObject.Delete($scope.customObject, $scope.AppHelper.GetAuthParams(), function(data, status) {
+        $location.path("/#/application/account/" + $scope.AppHelper.GetAuthParams().accountId + "/customObjects");
       }, function(data, status) {
         $scope.errorResponse = JSON.stringify(data, null, 2);
       });
     }
     $scope.QuickDelete = function(customObject) {
-      CustomObject.Delete(customObject, $scope.AuthParams, function(data, status) {
+      CustomObject.Delete(customObject, $scope.AppHelper.GetAuthParams(), function(data, status) {
         $scope.SearchCustomObjects();
       }, function(data, status) {
         $scope.errorResponse = JSON.stringify(data, null, 2);
@@ -120,7 +117,7 @@ contactManagerControllers.controller('CustomObjectModelDefinitionCtrl', ['$scope
     $scope.ValidDataTypes = ["String", "Date", "Number", "ObjectId", "Boolean"];
     $scope.customObjectModelDefinition = {};
     $scope.customObjectModelDefinition.type = $scope.ValidDataTypes[0];
-    $scope.AuthParams = AppHelper.GetAuthParams();
+    $scope.AppHelper = AppHelper;
     $scope.GetCustomObjectModelDefinition = function() {
       CustomObjectModelDefinition.Get({
         _id: $routeParams.customObjectModelDefinitionId
@@ -132,21 +129,22 @@ contactManagerControllers.controller('CustomObjectModelDefinitionCtrl', ['$scope
     }
     $scope.UpdateDefinition = function() {
       CustomObjectModelDefinition.Update($scope.customObjectModelDefinition, $scope.AuthParams, function(data, status) {
-        $scope.customObjectModelDefinition = data.customObjectModelFieldDefinition.data;
+        $scope.customObjectModelDefinition = data.customObjectModelDefinition.data;
+        $scope.form.$setPristine();
       }, function(data, status) {
         $scope.errorResponse = JSON.stringify(data, null, 2);
       });
     }
     $scope.CreateDefinition = function() {
       CustomObjectModelDefinition.Create($scope.customObjectModelDefinition, $scope.AuthParams, function(data, status) {
-        $location.path(AppHelper.GetCustomObjectsModelDefinitionUrl());
+        $location.path("/#/application/account/" + $scope.AppHelper.GetAuthParams().accountId + "/customObject/" + GetAuthParams().customObjectId + "/modelDefinition/" + customObjectModelDefinitionId);
       }, function(data, status) {
         $scope.errorResponse = JSON.stringify(data, null, 2);
       });
     }
     $scope.RemoveDefinition = function() {
       CustomObjectModelDefinition.Delete($scope.customObjectModelDefinition, $scope.AuthParams, function(data, status) {
-        $location.path(AppHelper.GetCustomObjectsUrl());
+        $location.path('/'+AppHelper.GetCustomObjectsUrl());
       }, function(data, status) {
         $scope.errorResponse = JSON.stringify(data, null, 2);
       });
@@ -162,6 +160,7 @@ contactManagerControllers.controller('CustomObjectModelDefinitionCtrl', ['$scope
     if ($routeParams.customObjectModelDefinitionId != null) {
       $scope.GetCustomObjectModelDefinition();
     }
+    $scope.AppHelper = AppHelper;
   }
 ]);
 
@@ -240,7 +239,7 @@ contactManagerControllers.controller('CustomObjectModelDataCtrl', ['$scope', '$h
 	    	}
     	}
     	CustomObjectData.Create(customObjectData, $scope.AuthParams, function(data, status) {
-    		$location.path(AppHelper.GetCustomObjectUrl());
+    		$location.path('/'+AppHelper.GetCustomObjectUrl());
     	}, function(data, status){
     		$scope.errorResponse = data;
     	});
@@ -294,13 +293,21 @@ contactManagerControllers.controller('CustomObjectModelDataCtrl', ['$scope', '$h
 		$scope.Update = function(){
 			CustomObjectData.Update($scope.customObjectData, $scope.AuthParams, function(data, status) {
     		$scope.customObjectData = data.customObjectData.data;
+        $scope.form.$setPristine();
     	}, function(data, status){
     		$scope.errorResponse = data;
     	});
 		}
+    $scope.QuickDeleteCustomObjectData = function(id){
+      CustomObjectData.Delete({_id: id}, $scope.AuthParams, function(data, status) {
+        $scope.Search();
+      }, function(data, status){
+        $scope.errorResponse = data;
+      });
+    }
 		$scope.Delete = function(){
 			CustomObjectData.Delete({_id: $scope.customObjectData._id}, $scope.AuthParams, function(data, status) {
-    		$location.path(AppHelper.GetCustomObjectUrl());
+    		$location.path('/'+AppHelper.GetCustomObjectUrl());
     	}, function(data, status){
     		$scope.errorResponse = data;
     	});

@@ -12,10 +12,11 @@ partials/customObjects/search.html
   </span>
 </div>
 <div>
-	Displaying a total of {{ customObjects.length }} Custom Objects
+	<b>Displaying a total of {{ customObjects.length }} Custom Objects</b>
 </div>
-<div ng-repeat="customObject in customObjects" style="border:2px solid;">
-	<div style="background-color:purple;">
+
+<div ng-repeat="customObject in customObjects" class='search-item'>
+	<div class="search-heading">
 		<h3 style="margin:0px;color:white;" class="text-left">{{ customObject.name}}</h3>
 	</div>
 	<div>

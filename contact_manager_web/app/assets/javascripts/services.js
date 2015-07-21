@@ -131,11 +131,17 @@ contactManagerServices.factory('AppHelper', function($http, $cookies, $routePara
   }
   var GetCustomObjectUrl = function(){
   	if (!GetAuthParams().customObjectId) return "";
-  	var url = "#/application/account/" + GetAuthParams().accountId + "/customObject/" + GetAuthParams().customObjectId
+  	var url = "/#/application/account/" + GetAuthParams().accountId + "/customObject/" + GetAuthParams().customObjectId
+    console.log(url);
   	return url;
   }
-  var GetCustomObjectsModelDefinitionUrl = function(){
-  	var url = "#/application/account/" + GetAuthParams().accountId + "/customObject/" + GetAuthParams().customObjectId + "/modelDefinition/" + GetAuthParams().customObjectModelDefinitionId
+  var GetCustomObjectsModelDefinitionUrl = function(id){
+    var customObjectModelDefinitionId = GetAuthParams().customObjectModelDefinitionId;
+    if (id)
+    {
+      customObjectModelDefinitionId = id;
+    }
+  	var url = "#/application/account/" + GetAuthParams().accountId + "/customObject/" + GetAuthParams().customObjectId + "/modelDefinition/" + customObjectModelDefinitionId
   	return url;
   }
   var CreateCustomObjectDataUrl = function(){
@@ -146,13 +152,16 @@ contactManagerServices.factory('AppHelper', function($http, $cookies, $routePara
   	var url = "#/application/account/" + GetAuthParams().accountId + "/customObject/" + GetAuthParams().customObjectId + "/data/search";
   	return url;
   }
-  var DebugMode = function(){
+  var IsDebugMode = function(){
   	if (localStorage.getItem("debug")){
   		return true;
   	}
   	return false;
   }
+  var GetGrid = function(customObjects){
+    return [[1,2,3],[4,5,6],[7,8,9]];
+  }
   return { GetAuthParams: GetAuthParams, GetAccountUrl: GetAccountUrl, GetCustomObjectUrl: GetCustomObjectUrl, 
   	GetCustomObjectsModelDefinitionUrl: GetCustomObjectsModelDefinitionUrl, CreateCustomObjectDataUrl: CreateCustomObjectDataUrl,
-  	SearchCustomObjectDataUrl: SearchCustomObjectDataUrl };
+  	SearchCustomObjectDataUrl: SearchCustomObjectDataUrl, GetGrid: GetGrid };
 });
