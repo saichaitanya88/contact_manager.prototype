@@ -27,35 +27,13 @@
 	</nav>
 </div>
 <div class="container">
-	<div class="row">
-		<div class="pull-right">
-			<button class="btn-default btn" onclick="window.history.back()"><span class="glyphicon glyphicon-chevron-left"></span></button>
-			<button class="btn-default btn" onclick="window.history.forward()"><span class="glyphicon glyphicon-chevron-right"></span></button>
+	<div class="input-group col-sm-12">
+		<div class="pull-right" style="margin-bottom:10px;">
+			<button class="btn-default btn" onclick="window.history.back()" title="Go Backward"><span class="glyphicon glyphicon-chevron-left"></span></button>
+			<button class="btn-default btn" onclick="window.history.forward()" title="Go Forward"><span class="glyphicon glyphicon-chevron-right"></span></button>
 		</div>
 	</div>
 	<div class="view-container">
 		<div ng-view class="view-frame"></div>
-	</div>
-</div>
-
-<br/>
-<div class='container'>
-	<div class="row">
-		<ol>
-			<li>Add template to display CreatedAt, UpdatedAt, CreatedBy and UpdatedBy fields for all objects</li>
-			<li>Style with bootstrap and remove br tags from the code</li>
-			<li>Connection Failed Issue for MongoDB
-				<ul>
-					<li>http://stackoverflow.com/questions/6276703/nodejs-mongodb-cannot-call-method-collection-of-null</li>
-					<li>http://stackoverflow.com/questions/23183465/mongodb-error-2nd-time-calling-function-typeerror-cannot-call-method-collecti</li>
-					<li>http://stackoverflow.com/questions/15609874/node-js-mongodb-client-cannot-call-method-collection-of-null</li>
-				</ul>
-			</li>
-			<li>build a dashboard page or index page which contains View CustomObjects, and other useful links</li>
-			<li>use cards from this link - http://www.creative-tim.com/product/rotating-css-card . show system fields in the flipped tab.</li>
-			<li>use special grids 4x4 or 3x3 etc. if possible using bootstrap grids</li>
-			<li>code clean up regarding AppHelper</li>
-			<li>searches need pagination or infinite scroll with information neatly available regarding total search items</li>
-		</ol>
 	</div>
 </div>

@@ -38,5 +38,6 @@ Rails.application.routes.draw do
   get 'partials/customObjects/data/get.html' => 'angular#custom_object_data_get'
   get 'partials/static/not-found.html' => 'angular#static_not_found'
   get 'partials/static/navbar.html' => 'angular#static_navbar'
+  get 'partials/debug/scope-params.html' => 'angular#debug_scope_params'
   
 end

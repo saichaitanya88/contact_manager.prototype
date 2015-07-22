@@ -144,5 +144,12 @@ contactManagerServices.factory('AppHelper', function($http, $cookies, $routePara
       this.Opened[name] = true;
     }
   }
-  return { GetAuthParams: GetAuthParams, IsDebugMode: IsDebugMode , DatePicker: DatePicker};
+  var DebugInfoList = function(scope){
+    var debugData = [];
+    for(var i = 0; i < Object.keys(scope).length; i++){
+      debugData.push({ param: Object.keys(scope)[i], value: scope[Object.keys(scope)[i]]});
+    }
+    return debugData;
+  }
+  return { GetAuthParams: GetAuthParams, IsDebugMode: IsDebugMode , DatePicker: DatePicker, DebugInfoList:DebugInfoList};
 });

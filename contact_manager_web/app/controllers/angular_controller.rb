@@ -51,4 +51,8 @@ class AngularController < ApplicationController
   def static_navbar
     render '/static/navbar'
   end
+
+  def debug_scope_params
+    render '/partials/debug/scope-params'
+  end
 end

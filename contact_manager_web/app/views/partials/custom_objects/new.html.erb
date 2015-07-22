@@ -1,5 +1,4 @@
-partials/customObjects/new.html
-
+<div ng-if="AppHelper.IsDebugMode()">partials/customObjects/new.html</div>
 <form novalidate class="form-horizontal" name="form">
   <div class="form-group">
     <label for="name" class="col-sm-2 control-label">Name</label>
@@ -31,3 +30,5 @@ partials/customObjects/new.html
     </div>
   </div>
 </form>
+
+<div ng-include="'/partials/debug/scope-params.html'"></div>

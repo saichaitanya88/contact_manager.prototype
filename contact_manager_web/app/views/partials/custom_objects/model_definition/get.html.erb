@@ -1,5 +1,4 @@
-partials/customObjects/modelDefinitions/get.html
-
+<div ng-if="AppHelper.IsDebugMode()">partials/customObjects/modelDefinitions/get.html</div>
 
 <form novalidate class="form-horizontal" name="form">
   <div class="form-group">
@@ -46,6 +45,4 @@ partials/customObjects/modelDefinitions/get.html
 	<div ng-show="successResponse">{{ successResponse }}</div>
 </div>
 
-<br/>
-<br/>
-{{ customObjectModelDefinition | json}}
+<div ng-include="'/partials/debug/scope-params.html'"></div>

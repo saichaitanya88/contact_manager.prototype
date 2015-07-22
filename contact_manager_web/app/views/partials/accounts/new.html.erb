@@ -1,15 +1,18 @@
-/partials/accounts/new.html
+<div ng-if="AppHelper.IsDebugMode()">/partials/accounts/new.html</div>
 <div class="row view-body">
   <form novalidate class="form-horizontal" name="form">
     <div class="form-group">
       <label for="email" class="col-sm-2 control-label">Email</label>
       <div class="col-sm-10">
         <input type="email" class="form-control" required name="email" ng-model="account.email">
-        <div ng-show="form.email.$error.required">Please enter your email address</div>
-        <div ng-show="form.email.$error.$email">Email format is not valid</div>
+        <div ng-show="form.email.$error.required"><span class="glyphicon glyphicon-warning-sign"></span>Please enter your email address</div>
+        <div ng-show="form.email.$error.$email"><span class="glyphicon glyphicon-warning-sign"></span>Email format is not valid</div>
         <div ng-show="errorResponse.account.errors.email.length > 0">
         	<div ng-repeat="error in errorResponse.account.errors.email">
-        		<div>{{error}}</div>
+        		<div>
+              <span class="glyphicon glyphicon-warning-sign"></span>
+              {{error}}
+            </div>
         	</div>
         </div>
       </div>
@@ -18,10 +21,13 @@
       <label for="password" class="col-sm-2 control-label">Password</label>
       <div class="col-sm-10">
         <input type="password" class="form-control" required name="password" ng-model="account.password">
-        <div ng-show="form.email.$error.required">Please enter your password</div>
+        <div ng-show="form.email.$error.required"><span class="glyphicon glyphicon-warning-sign"></span>Please enter your password</div>
         <div ng-show="errorResponse.account.errors.password.length > 0">
           <div ng-repeat="error in errorResponse.account.errors.password">
-            <div>{{error}}</div>
+            <div>
+              <span class="glyphicon glyphicon-warning-sign"></span>
+              {{error}}
+            </div>
           </div>
         </div>
       </div>
@@ -30,10 +36,13 @@
       <label for="firstName" class="col-sm-2 control-label">First Name</label>
       <div class="col-sm-10">
         <input type="text" class="form-control" required name="firstName" ng-model="account.firstName">
-        <div ng-show="form.email.$error.required">Please enter your First Name</div>
+        <div ng-show="form.email.$error.required"><span class="glyphicon glyphicon-warning-sign"></span>Please enter your First Name</div>
         <div ng-show="errorResponse.account.errors.firstName.length > 0">
           <div ng-repeat="error in errorResponse.account.errors.firstName">
-            <div>{{error}}</div>
+            <div>
+              <span class="glyphicon glyphicon-warning-sign"></span>
+              {{error}}
+            </div>
           </div>
         </div>
       </div>
@@ -42,10 +51,15 @@
       <label for="lastName" class="col-sm-2 control-label">Last Name</label>
       <div class="col-sm-10">
         <input type="text" class="form-control" required name="lastName" ng-model="account.lastName">
-        <div ng-show="form.email.$error.required">Please enter your Last Name</div>
+        <div ng-show="form.email.$error.required">
+          <span class="glyphicon glyphicon-warning-sign"></span>
+          Please enter your Last Name</div>
         <div ng-show="errorResponse.account.errors.lastName.length > 0">
           <div ng-repeat="error in errorResponse.account.errors.lastName">
-            <div>{{error}}</div>
+            <div>
+              <span class="glyphicon glyphicon-warning-sign"></span>
+              {{error}}
+            </div>
           </div>
         </div>
       </div>
@@ -53,15 +67,14 @@
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
         <button type="button" class="btn btn-default" ng-disabled='!form.$valid' ng-click="CreateAccount()">Create account</button>
-        <div ng-show="form.$invalid">Please complete all fields before submitting</div>
+        <div ng-show="form.$invalid">
+          <span class="glyphicon glyphicon-warning-sign"></span>
+          Please complete all fields before submitting
+        </div>
       </div>
     </div>
   </form>
 
 </div>
 
-<div class="col-md-offset-1" ng-show="AppHelper.DebugMode()">
-  <div>{{ account  }}</div>
-	<div>{{ errorResponse  }}</div>
-	<div>{{ successResponse }}</div>
-</div>
+<div ng-include="'/partials/debug/scope-params.html'"></div>

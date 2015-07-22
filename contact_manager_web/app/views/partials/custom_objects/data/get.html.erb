@@ -1,5 +1,4 @@
-partials/customObjects/data/get.html
-
+<div ng-if="AppHelper.IsDebugMode()">partials/customObjects/data/get.html</div>
 
 <div class='row'>
 	<form novalidate class="form-horizontal" name="form" >
@@ -19,8 +18,4 @@ partials/customObjects/data/get.html
   </form>
 </div>
 
-<br/><br/><br/>
-{{customObjectData|json}}
-<br/><br/><br/>
-{{errorResponse|json}}
-{{customObjectDataKeys|json}}
+<div ng-include="'/partials/debug/scope-params.html'"></div>

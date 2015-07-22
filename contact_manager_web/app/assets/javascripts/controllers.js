@@ -255,7 +255,7 @@ contactManagerControllers.controller('CustomObjectDataCtrl', ['$scope', '$http',
 						query[$scope.customObject.modelDefinition[i].fieldName] = strQuery;	
 					}
 				}
-				else if ($scope.customObject.modelDefinition[i].type == "Date"){
+				else if ($scope.customObject.modelDefinition[i].type == "Date" || $scope.customObject.modelDefinition[i].type == "Number"){
 					var dtQuery = {};
 					if ($scope.customObject.modelDefinition[i].value_start){
 						dtQuery['$gte'] = $scope.customObject.modelDefinition[i].value_start;
@@ -286,7 +286,7 @@ contactManagerControllers.controller('CustomObjectDataCtrl', ['$scope', '$http',
 			return checkForHexRegExp.test(str);
 		}
 		$scope.CustomObjectDataUrl = function(data){
-			var url = AppHelper.CreateCustomObjectDataUrl() + "/" + data._id;
+       var url = "#/application/account/" + $scope.AppHelper.GetAuthParams().accountId + "/customObject/" + $scope.AppHelper.GetAuthParams().customObjectId + "/data/" + data._id;
 			return url;
 		}
 		$scope.Update = function(){
@@ -319,15 +319,8 @@ contactManagerControllers.controller('StaticCtrl', ['$scope', '$http', "AppHelpe
 
 contactManagerControllers.controller('MiscCtrl', ['$scope', '$http', "AppHelper", "Account", "$location", "$cookies", 
 	function($scope, $http, AppHelper, Account, $location, $cookies) {
-    //sd
 	$scope.AppHelper = AppHelper;
 	$scope.BaseUrl = "/";
-  $scope.CustomObjectUrl = function() {
-    return AppHelper.GetCustomObjectUrl();
-  }
-  $scope.CustomObjectsModelDefinitionUrl = function() {
-    return AppHelper.GetCustomObjectsModelDefinitionUrl();
-  }
   $scope.LoginPath = "/#/application/account/signin";
   $scope.Authenticate = function() {
 	  Account.Authenticate($scope.AppHelper.GetAuthParams(), $scope.AppHelper.GetAuthParams(),
@@ -353,8 +346,9 @@ contactManagerControllers.controller('MiscCtrl', ['$scope', '$http', "AppHelper"
 		$location.path($scope.BaseUrl);
   }
   $scope.$root.$on( "$routeChangeStart", function(event, next, current) {
-      $scope.Authenticate();
-    })
+    window.document.title = next.$$route.title;
+    $scope.Authenticate();
+  })
   $scope.$on("$stateChangeSuccess", $scope.Authenticate());
   $scope.DebugMode = true;
 }]);

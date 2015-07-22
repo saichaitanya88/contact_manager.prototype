@@ -1,9 +1,5 @@
-partials/customObjects/get.html
-<br/>
-<!-- partials/customObjects/get.html
-<br/>
-Edit page for the customObject 
-<br/> -->
+<div ng-if="AppHelper.IsDebugMode()">partials/customObjects/get.html</div>
+
 <div class="row">
   <form novalidate class="form-horizontal" name="form" >
     <div class="form-group">
@@ -37,8 +33,8 @@ Edit page for the customObject
         </button>
         <button type="button" class="btn btn-default" ng-click="DeleteCustomObject()"><span class="glyphicon glyphicon-trash"></span></button>
         <div ng-show="form.$invalid">Please complete all fields before submitting</div>
-        <a class="btn btn-default" href="" ng-href="{{AppHelper.CreateCustomObjectDataUrl()}}"><span class="glyphicon glyphicon-th-list"></span></a>
-        <a class="btn btn-default" href="" ng-href="{{AppHelper.SearchCustomObjectDataUrl()}}"><span class="glyphicon glyphicon-search"></span></a>
+        <a class="btn btn-default" href="" ng-href='{{"#/application/account/" + AppHelper.GetAuthParams().accountId + "/customObject/" + AppHelper.GetAuthParams().customObjectId + "/data"}}'><span class="glyphicon glyphicon-th-list"></span></a>
+        <a class="btn btn-default" href="" ng-href='{{"#/application/account/" + AppHelper.GetAuthParams().accountId + "/customObject/" + AppHelper.GetAuthParams().customObjectId + "/data/search"}}'><span class="glyphicon glyphicon-search"></span></a>
       </div>
     </div>
     <div class="form-group">
@@ -80,12 +76,5 @@ Edit page for the customObject
   	</div>
   </form>
 </div>
-<div class="col-md-offset-1" ng-show="errorResponse || successResponse">
-  DEBUG: <br/>
-	<div ng-show="errorResponse">{{ errorResponse }}</div>
-	<div ng-show="successResponse">{{ successResponse }}</div>
-</div>
 
-
-{{ customObject | json }}
-<br />
+<div ng-include="'/partials/debug/scope-params.html'"></div>

@@ -1,5 +1,4 @@
-partials/customObjects/data/search.html
-
+<div ng-if="AppHelper.IsDebugMode()">partials/customObjects/data/search.html</div>
 
 <div class='row'>
 	<form novalidate class="form-horizontal" name="form" >
@@ -13,7 +12,8 @@ partials/customObjects/data/search.html
 		    				<span class="input-group-addon">Start</span>
 		            <input type="date" class="form-control" datepicker-popup ng-model="field.value_start" is-open="AppHelper.DatePicker.Opened[field.$$hashKey + 's']" datepicker-options="AppHelper.DatePicker.Options" date-disabled="" close-text="Close" />
 		            <span class="input-group-btn">
-		              <button type="button" class="btn btn-default" ng-click="AppHelper.DatePicker.Open($event, field.$$hashKey + 's')"><i class="glyphicon glyphicon-calendar"></i></button>
+		              <button type="button" class="btn btn-default" ng-click="AppHelper.DatePicker.Open($event, field.$$hashKey + 's')"><i class="glyphicon glyphicon-calendar"></i>
+		              </button>
 	            	</span>
 		          </div>
 		    		</div>
@@ -22,7 +22,8 @@ partials/customObjects/data/search.html
 			    			<span class="input-group-addon">End</span>
 		            <input type="date" class="form-control" datepicker-popup ng-model="field.value_end" is-open="AppHelper.DatePicker.Opened[field.$$hashKey + 'e']" datepicker-options="AppHelper.DatePicker.Options" date-disabled="" close-text="Close" />
 		            <span class="input-group-btn">
-		              <button type="button" class="btn btn-default" ng-click="AppHelper.DatePicker.Open($event, field.$$hashKey + 'e')"><i class="glyphicon glyphicon-calendar"></i></button>
+		              <button type="button" class="btn btn-default" ng-click="AppHelper.DatePicker.Open($event, field.$$hashKey + 'e')"><i class="glyphicon glyphicon-calendar"></i>
+		              </button>
 	            	</span>
 		    			</div>
 						</div>
@@ -37,6 +38,22 @@ partials/customObjects/data/search.html
 				<div ng-switch-when="Boolean">
 					<div class="pull-left">
 						<input class="form-control" type='checkbox' ng-model='field.value' />
+					</div>
+				</div>
+				<div ng-switch-when="Number">
+					<div class='row'>
+		    		<div class="col-sm-6">
+		    			<div class="input-group">
+		    				<span class="input-group-addon">Min</span>
+		            <input type="number" class="form-control" ng-model="field.value_start" />
+		          </div>
+		    		</div>
+		    		<div class="col-sm-6">
+		    			<div class="input-group">
+			    			<span class="input-group-addon">Max</span>
+		            <input type="number" class="form-control" ng-model="field.value_end" />
+		    			</div>
+						</div>
 					</div>
 				</div>
       </div>
@@ -73,14 +90,4 @@ DATA ARRAY:
 	</tbody>
 </table>
 
-<div ng-show="DebugMode()" class="well">
-{{ customObjectData | json }}
-
-<br/><br/><br/>
-{{ customObject | json}}
-
-
-<br/>
-<br/><br/>
-{{errorResponse | json}}
-</div>
+<div ng-include="'/partials/debug/scope-params.html'"></div>

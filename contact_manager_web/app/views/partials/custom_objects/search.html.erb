@@ -1,34 +1,32 @@
-partials/customObjects/search.html
-<br/>
-<br/>
+<div ng-if="AppHelper.IsDebugMode()">partials/customObjects/search.html</div>
 
 <div class="input-group">
   <input class='form-control' ng-model="searchTerm" ng-change="SearchCustomObjects()" />
   <span class="input-group-addon">
-  	<a ng-click="SearchCustomObjects()" href=''><span class="glyphicon glyphicon-search"></a></span>
+  	<a ng-click="SearchCustomObjects()" href='' data-toggle="tooltip" data-placement="top" title="Search Custom Objects"><span class="glyphicon glyphicon-search"></a></span>
   </span>
   <span class="input-group-addon">
-  	<a ng-href="#/application/account/{{AppHelper.GetAuthParams().accountId}}/customObject"><span class="glyphicon glyphicon-plus"></span></a>
+  	<a ng-href="#/application/account/{{AppHelper.GetAuthParams().accountId}}/customObject" title="New Custom Object"><span class="glyphicon glyphicon-plus"></span></a>
   </span>
 </div>
 <div>
-	<b>Displaying a total of {{ customObjects.length }} Custom Objects</b>
+	<b>Displaying a total of <u>{{ customObjects.length }}</u> Custom Objects</b>
 </div>
 
-<div ng-repeat="customObject in customObjects" class='search-item'>
-	<div class="search-heading">
-		<h3 style="margin:0px;color:white;" class="text-left">{{ customObject.name}}</h3>
-	</div>
-	<div>
+<div ng-repeat="customObject in customObjects" class="row search-item">
+	<div class="col-sm-6">	
+		<h4 class="text-left">{{ customObject.name}}</h4>
 		<i>{{ customObject.description}}</i>
 	</div>
-	<a ng-href="#/application/account/{{AppHelper.GetAuthParams().accountId}}/customObject/{{customObject._id}}" class="btn-default btn"><span class="glyphicon glyphicon-pencil"></span></a>
-	<a ng-click="QuickDelete(customObject)" class="btn-default btn"><span class="glyphicon glyphicon-trash"></span></a>
-	<a ng-href="#/application/account/{{AppHelper.GetAuthParams().accountId}}/customObject/{{customObject._id}}/data/search" class="btn-default btn"><span class="glyphicon glyphicon-search"></span></a>
-	<a ng-href="#/application/account/{{AppHelper.GetAuthParams().accountId}}/customObject/{{customObject._id}}/data" class="btn-default btn"><span class="glyphicon glyphicon-list"></span></a>
+	<div class="col-sm-6">	
+		<h4 class="pull-right">
+			<a ng-href="#/application/account/{{AppHelper.GetAuthParams().accountId}}/customObject/{{customObject._id}}" class="btn-default btn" title="Edit"><span class="glyphicon glyphicon-pencil"></span></a>
+			<a ng-click="QuickDelete(customObject)" class="btn-default btn" title="Delete"><span class="glyphicon glyphicon-trash"></span></a>
+			<a ng-href="#/application/account/{{AppHelper.GetAuthParams().accountId}}/customObject/{{customObject._id}}/data/search" class="btn-default btn" title="Search"><span class="glyphicon glyphicon-search"></span></a>
+			<a ng-href="#/application/account/{{AppHelper.GetAuthParams().accountId}}/customObject/{{customObject._id}}/data" class="btn-default btn" title="Create New Custom Object Data"><span class="glyphicon glyphicon-list"></span></a>
+		</h4>
+	</div>
 </div>
 
 
-<div ng-show="errorResponse">
-	{{ errorResponse }}
-</div>
+<div ng-include="'/partials/debug/scope-params.html'"></div>
