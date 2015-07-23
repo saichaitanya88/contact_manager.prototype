@@ -1,0 +1,2 @@
+node: supervisor ./contact_manager_core/app.js
+rails: cd contact_manager_web & rails s

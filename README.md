@@ -9,7 +9,7 @@ Contact Manager Prototype is multi-tenant application that allows users to manag
 The website is built using <b>Ruby On Rails</b> with <b>AngularJS</b>, this was to make the code base similar with the Mobile application which is built using <b>Apache Cordova</b> and <b>Ionic Framework</b>. 
 </p>
 <p>
-	REST API Guide:
+	REST API Guide: Please see the live documentation <a>here</a>.
 </p>
 
 <blockquote><p>Create Account</p></blockquote>
@@ -166,51 +166,7 @@ DELETE /application/account/:accountId/customObject/:customObjectId/modelDefinit
 </p>
 </pre>
  
-<blockquote><p>Sign in to Account</p></blockquote>
-<pre>
-GET /application/account/:accountId/customObject/:customObjectId/modelValidation
-<p>
-	Request: {}
-</p>
-<p>
-	Response: {}
-</p>
-</pre>
-
-<blockquote><p>Sign in to Account</p></blockquote>
-<pre>
-POST /application/account/:accountId/customObject/:customObjectId/modelValidation
-<p>
-	Request: {}
-</p>
-<p>
-	Response: {}
-</p>
-</pre>
-
-<blockquote><p>Sign in to Account</p></blockquote>
-<pre>
-PUT /application/account/:accountId/customObject/:customObjectId/modelValidation/:modelValidationId
-<p>
-	Request: {}
-</p>
-<p>
-	Response: {}
-</p>
-</pre>
-
-<blockquote><p>Sign in to Account</p></blockquote>
-<pre>
-DELETE /application/account/:accountId/customObject/:customObjectId/modelValidation/:modelValidationId
-<p>
-	Request: {}
-</p>
-<p>
-	Response: {}
-</p>
-</pre>
-
-<blockquote><p>Sign in to Account</p></blockquote>
+<blockquote><p>Create CustomObjectData</p></blockquote>
 <pre>
 POST /application/account/:accountId/customObject/:customObjectId/data
 <p>
@@ -221,7 +177,7 @@ POST /application/account/:accountId/customObject/:customObjectId/data
 </p>
 </pre>
 
-<blockquote><p>Sign in to Account</p></blockquote>
+<blockquote><p>Search CustomObjectData</p></blockquote>
 <pre>
 POST /application/account/:accountId/customObject/:customObjectId/data/search
 <p>
@@ -232,7 +188,7 @@ POST /application/account/:accountId/customObject/:customObjectId/data/search
 </p>
 </pre>
 
-<blockquote><p>Sign in to Account</p></blockquote>
+<blockquote><p>Get CustomObjectData</p></blockquote>
 <pre>
 GET /application/account/:accountId/customObject/:customObjectId/data/:customObjectDataId
 <p>
@@ -243,7 +199,7 @@ GET /application/account/:accountId/customObject/:customObjectId/data/:customObj
 </p>
 </pre>
 
-<blockquote><p>Sign in to Account</p></blockquote>
+<blockquote><p>Update CustomObjectData</p></blockquote>
 <pre>
 PUT /application/account/:accountId/customObject/:customObjectId/data/:customObjectDataId
 <p>
@@ -254,7 +210,7 @@ PUT /application/account/:accountId/customObject/:customObjectId/data/:customObj
 </p>
 </pre>
 
-<blockquote><p>Sign in to Account</p></blockquote>
+<blockquote><p>Delete CustomObjectData</p></blockquote>
 <pre>
 DELETE /application/account/:accountId/customObject/:customObjectId/data/:customObjectDataId
 <p>

@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   root 'static#index'
 
   post '/application/account' => 'account#create'
+  match '/application/account', to: 'application#option', via: [:options]
   post '/application/account/signin' => 'account#login'
   get '/application/account/:accountId' => 'account#get'
   put '/application/account/:accountId' => 'account#edit'
