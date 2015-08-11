@@ -3,7 +3,6 @@ Rails.application.routes.draw do
   root 'static#index'
 
   post '/application/account' => 'account#create'
-  match '/application/account', to: 'application#option', via: [:options]
   post '/application/account/signin' => 'account#login'
   get '/application/account/:accountId' => 'account#get'
   put '/application/account/:accountId' => 'account#edit'
@@ -41,4 +40,19 @@ Rails.application.routes.draw do
   get 'partials/static/navbar.html' => 'angular#static_navbar'
   get 'partials/debug/scope-params.html' => 'angular#debug_scope_params'
   
+
+# OPTIONS
+  match '/application/account', to: 'application#option', via: [:options]
+  match '/application/account/signin', to: 'application#option', via: [:options]
+  match '/application/account/:accountId' , to: 'application#option', via: [:options]
+  match '/application/account/:accountId/customObject', to: 'application#option', via: [:options]
+  match '/application/account/:accountId/customObject/:customObjectId', to: 'application#option', via: [:options]
+  match '/application/account/:accountId/customObjects', to: 'application#option', via: [:options]
+  match '/application/account/:accountId/customObject/:customObjectId/modelDefinitions', to: 'application#option', via: [:options]
+  match '/application/account/:accountId/customObject/:customObjectId/modelDefinition/:customObjectModelDefinitionId', to: 'application#option', via: [:options]
+  match '/application/account/:accountId/customObject/:customObjectId/modelDefinition', to: 'application#option', via: [:options]
+  match '/application/account/:accountId/customObject/:customObjectId/data', to: 'application#option', via: [:options]
+  match '/application/account/:accountId/customObject/:customObjectId/data/search', to: 'application#option', via: [:options]
+  match '/application/account/:accountId/customObject/:customObjectId/data/:customObjectDataId', to: 'application#option', via: [:options]
+
 end
