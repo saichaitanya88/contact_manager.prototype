@@ -9,9 +9,13 @@ Contact Manager Prototype is multi-tenant application that allows users to manag
 The website is built using <b>Ruby On Rails</b> with <b>AngularJS</b>, this was to make the code base similar with the Mobile application which could be built using <b>Apache Cordova</b> and <b>Ionic Framework</b>. 
 </p>
 <p>
-	REST API Guide: Please see the documentation in the swagger_ui folder <a>here</a>.
+	REST API Guide: Please see the documentation in the swagger folder.
 </p>
 <p>
 Concerns:
 Since this is a prototype, there is no encryption of passwords or proper application level authentication. This can be added into the application source code. 
 </p>
+
+<p>To use the application: </p>
+<p> Clone the reposiory and run the rails server located in contact_manager_web, and the NodeJS API located in contact_managet_core 
+Live documentation is available as well by running visiting the swagger documentation page located in the swagger folder when the applications running</p>
