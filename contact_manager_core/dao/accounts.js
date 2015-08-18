@@ -1,6 +1,8 @@
 var MongoClient = require('mongodb').MongoClient;
 var Logger = require('../utilities/logger').Logger;
 var ApplicationModes = require("../utilities/config").ApplicationModes;
+var ApplicationConfig = require("../utilities/config").ApplicationConfig;
+var appConfig = new ApplicationConfig();
 var logger = new Logger();
 var appModes = new ApplicationModes();
 
@@ -9,7 +11,7 @@ function AccountsDataAccess () {
   this.GetAccount = function GetAccount(query, errorCallback, successCallback){
     logger.log("AccountsDataAccess.GetAccount", appModes.DEBUG)
     // Open the connection to the server
-    MongoClient.connect("mongodb://localhost:27017/conman_dev", {native_parser:true}, function(err, db) {
+    MongoClient.connect(appConfig.mongoDbConnection, {native_parser:true}, function(err, db) {
       if (err){
         errorCallback(err);
       }
@@ -39,7 +41,7 @@ function AccountsDataAccess () {
   this.UpsertAccount = function UpsertAccount(account, errorCallback, successCallback){
     logger.log("AccountsDataAccess.UpsertAccount", appModes.DEBUG)
     // Open the connection to the server
-    MongoClient.connect("mongodb://localhost:27017/conman_dev", {native_parser:true}, function(err, db) {
+    MongoClient.connect(appConfig.mongoDbConnection, {native_parser:true}, function(err, db) {
       logger.log("AccountsDataAccess.UpsertAccount.MongoConnect", appModes.DEBUG)
       // Get the first db and do an update document on it
       var accountsCollection = db.collection('accounts');
@@ -64,7 +66,7 @@ function AccountsDataAccess () {
   this.GetSession = function GetSession(query, errorCallback, successCallback){
     logger.log("AccountsDataAccess.GetSession", appModes.DEBUG);
     // Open the connection to the server
-    MongoClient.connect("mongodb://localhost:27017/conman_dev", {native_parser:true}, function(err, db) {
+    MongoClient.connect(appConfig.mongoDbConnection, {native_parser:true}, function(err, db) {
       // Get the first db and do an update document on it
       var sessionsCollection = db.collection('sessions');
       
@@ -88,7 +90,7 @@ function AccountsDataAccess () {
   this.UpsertSession = function UpsertSession(session, errorCallback, successCallback){
     logger.log("AccountsDataAccess.UpsertSession", appModes.DEBUG);
     // Open the connection to the server
-    MongoClient.connect("mongodb://localhost:27017/conman_dev", {native_parser:true}, function(err, db) {
+    MongoClient.connect(appConfig.mongoDbConnection, {native_parser:true}, function(err, db) {
       // Get the first db and do an update document on it
       var sessionsCollection = db.collection('sessions');
       

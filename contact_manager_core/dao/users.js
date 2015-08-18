@@ -1,6 +1,8 @@
 var MongoClient = require('mongodb').MongoClient;
 var Logger = require('../utilities/logger').Logger;
 var ApplicationModes = require("../utilities/config").ApplicationModes;
+var ApplicationConfig = require("../utilities/config").ApplicationConfig;
+var appConfig = new ApplicationConfig();
 var logger = new Logger();
 var appModes = new ApplicationModes();
 
@@ -8,7 +10,7 @@ function UserDataAccess () {
   "use strict";
   this.GetUserByEmail = function GetUser(email, callback){
     // Open the connection to the server
-    MongoClient.connect("mongodb://localhost:27017/conman_dev", {native_parser:true}, function(err, db) {
+    MongoClient.connect(appConfig.mongoDbConnection, {native_parser:true}, function(err, db) {
       // Get the first db and do an update document on it
       var usersCollection = db.collection('users');
       
@@ -28,7 +30,7 @@ function UserDataAccess () {
   };
   this.GetUser = function GetUser(user, errorCallback, successCallback){
     // Open the connection to the server
-    MongoClient.connect("mongodb://localhost:27017/conman_dev", {native_parser:true}, function(err, db) {
+    MongoClient.connect(appConfig.mongoDbConnection, {native_parser:true}, function(err, db) {
       // Get the first db and do an update document on it
       var usersCollection = db.collection('users');
       
@@ -49,7 +51,7 @@ function UserDataAccess () {
   this.CreateUser = function CreateUser(user, errorCallback, successCallback){
     logger.log("UserDataAccess.CreateUser", appModes.DEBUG)
     // Open the connection to the server
-    MongoClient.connect("mongodb://localhost:27017/conman_dev", {native_parser:true}, function(err, db) {
+    MongoClient.connect(appConfig.mongoDbConnection, {native_parser:true}, function(err, db) {
       logger.log("UserDataAccess.CreateUser.MongoConnect", appModes.DEBUG)
       // Get the first db and do an update document on it
       var usersCollection = db.collection('users');

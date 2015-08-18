@@ -2,13 +2,15 @@ var MongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectId;
 var Logger = require('../utilities/logger').Logger;
 var ApplicationModes = require("../utilities/config").ApplicationModes;
+var ApplicationConfig = require("../utilities/config").ApplicationConfig;
+var appConfig = new ApplicationConfig();
 var logger = new Logger();
 var appModes = new ApplicationModes();
 
 function CustomObjectDataAccess () {
 	this.GetCustomObjects = function GetCustomObjects(query, errorCallback, successCallback){
 		logger.log("CustomObjectDataAccess.GetCustomObjects", appModes.DEBUG);
-		MongoClient.connect("mongodb://localhost:27017/conman_dev", {native_parser:true}, function(err, db) {
+		MongoClient.connect(appConfig.mongoDbConnection, {native_parser:true}, function(err, db) {
 			var customObjectsCollection = db.collection('customObjects');
 			customObjectsCollection.find(query).toArray(ReturnCollectionObjectsData);
 			function ReturnCollectionObjectsData(err, docs){
@@ -26,7 +28,7 @@ function CustomObjectDataAccess () {
 	};
 	this.UpsertCustomObject = this.CreateCustomObject = function GetCustomObjects(customObject, errorCallback, successCallback){
 		logger.log("CustomObjectDataAccess.CreateCustomObject", appModes.DEBUG);
-		MongoClient.connect("mongodb://localhost:27017/conman_dev", {native_parser:true}, function(err, db) {
+		MongoClient.connect(appConfig.mongoDbConnection, {native_parser:true}, function(err, db) {
 			var customObjectsCollection = db.collection('customObjects');
 			customObjectsCollection.update({ "_id" : customObject._id},customObject,{upsert:true}, function (err, doc) {
         logger.log("CustomObjectDataAccess.CreateCustomObject.Collection.Update", appModes.DEBUG);
@@ -47,7 +49,7 @@ function CustomObjectDataAccess () {
 	};
 	this.DeleteCustomObject = function DeleteCustomObject(customObject, errorCallback, successCallback){
 		logger.log("CustomObjectDataAccess.DeleteCustomObject", appModes.DEBUG);
-		MongoClient.connect("mongodb://localhost:27017/conman_dev", {native_parser:true}, function(err, db) {
+		MongoClient.connect(appConfig.mongoDbConnection, {native_parser:true}, function(err, db) {
 			var customObjectsCollection = db.collection('customObjects');
 			customObjectsCollection.remove(customObject, function (err, doc) {
         logger.log("CustomObjectDataAccess.DeleteCustomObject.Collection.Remove", appModes.DEBUG);
@@ -69,7 +71,7 @@ function CustomObjectDataAccess () {
 	this.GetCustomObjectModelFieldDefinition = function GetCustomObjectModelFieldDefinition(customObject, options, errorCallback, successCallback){
 		//db.customObjects.find({_id : new ObjectId('55778555c5341d7226c99277')}, {_id:0,modelDefinition:{$elemMatch: {_id:ObjectId("55778555c5341d7226c9927a")}}})
 		logger.log("CustomObjectDataAccess.GetCustomObjectModelFieldDefinition", appModes.DEBUG);
-		MongoClient.connect("mongodb://localhost:27017/conman_dev", {native_parser:true}, function(err, db) {
+		MongoClient.connect(appConfig.mongoDbConnection, {native_parser:true}, function(err, db) {
 			var customObjectsCollection = db.collection('customObjects');
 			customObjectsCollection.find(customObject, options).toArray(function (err, docs) {
         logger.log("CustomObjectDataAccess.GetCustomObjectModelFieldDefinition.Collection.Find", appModes.DEBUG);

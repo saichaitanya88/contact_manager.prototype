@@ -1,6 +1,8 @@
 var MongoClient = require('mongodb').MongoClient;
 var Logger = require('../utilities/logger').Logger;
 var ApplicationModes = require("../utilities/config").ApplicationModes;
+var ApplicationConfig = require("../utilities/config").ApplicationConfig;
+var appConfig = new ApplicationConfig();
 var logger = new Logger();
 var appModes = new ApplicationModes();
 
@@ -9,7 +11,7 @@ function ApplicationDataAccess () {
   this.GetApplication = function GetAccount(query, errorCallback, successCallback){
     logger.log("ApplicationDataAccess.GetAccount", appModes.DEBUG)
     // Open the connection to the server
-    MongoClient.connect("mongodb://localhost:27017/conman_dev", {native_parser:true}, function(err, db) {
+    MongoClient.connect(appConfig.mongoDbConnection, {native_parser:true}, function(err, db) {
       // Get the first db and do an update document on it
       var accountsCollection = db.collection('applications');
       
