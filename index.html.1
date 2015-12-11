@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html ng-app="contactManagerApp">
+<head>
+  <title>ContactManagerWeb</title>
+  <link rel="stylesheet" media="all" href="/assets/bootstrap.min.self-052b57da6a8750fab9e262f0707ebef2a295993545ca19cbb3dae9b13ba020e1.css?body=1" data-turbolinks-track="true" />
+<link rel="stylesheet" media="all" href="/assets/application.self-92fca137d7f969d6934748a096264a4d98554b58a6c21c186383386e198160d8.css?body=1" data-turbolinks-track="true" />
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.1/angular.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.1/angular-route.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.1/angular-resource.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.1/angular-cookies.min.js"></script>
+  <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script src="/assets/angular-bootstrap.self-e9846a54b4d36603f0ab712639d0d9a7e337c4982efa411f675f0711a7e3fc06.js?body=1" data-turbolinks-track="true"></script>
+<script src="/assets/contact-manager-app.self-badf18fb86a579a408a773bcac80488a864034e460fbcedbd40c32b9746f306b.js?body=1" data-turbolinks-track="true"></script>
+<script src="/assets/controllers.self-4a5a3923c27ff14fefb14db624ebeae8708ecfc12010a84688234a186b35321e.js?body=1" data-turbolinks-track="true"></script>
+<script src="/assets/services.self-ab8285e23302ec1277d78f458c9f69df05f8bdde7f210150990eeba49c7b071e.js?body=1" data-turbolinks-track="true"></script>
+<script src="/assets/application.self-3a3c8b61bda630ee689740ce7cbd0dd8ea6fdd45e2c42eef4661ab38cf268afe.js?body=1" data-turbolinks-track="true"></script>
+  <meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="3RwsVN4et8pZovDMK+4hZUWYUoqRWYUlMZXGt8pGxO6/hksdwvaiMMJtD0ErmptZqVbgIYjdlpja23wN/W2uaw==" />
+</head>
+<body>
+
+<div ng-controller='MiscCtrl'>
+	<nav class="navbar navbar-default">
+	  <div class="container-fluid">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+	      <a class="navbar-brand" href="" ng-href="{{AccountUrl()}}">Contact Manager</a>
+	    </div>
+
+	    <!-- Collect the nav links, forms, and other content for toggling -->
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	      <ul class="nav navbar-nav">
+	        <!-- <li><a ng-href="{{AccountUrl()}}">Account</a></li> -->
+	      </ul>
+	      <ul class="nav navbar-nav navbar-right">
+	        <li><a target="_blank" href="https://github.com/saichaitanya88/contact_manager.prototype">Github</a></li>
+	        <li ng-show="!LoggedIn"><a ng-href="{{LoginPath}}">Login</a></li>
+	        <li ng-show="LoggedIn"><a href="" ng-click="LogOut()">Logout</a></li>
+	      </ul>
+	    </div><!-- /.navbar-collapse -->
+	  </div><!-- /.container-fluid -->
+	</nav>
+</div>
+<div class="container">
+	<div class="input-group col-sm-12">
+		<div class="pull-right" style="margin-bottom:10px;">
+			<button class="btn-default btn" onclick="window.history.back()" title="Go Backward"><span class="glyphicon glyphicon-chevron-left"></span></button>
+			<button class="btn-default btn" onclick="window.history.forward()" title="Go Forward"><span class="glyphicon glyphicon-chevron-right"></span></button>
+		</div>
+	</div>
+	<div class="view-container">
+		<div ng-view class="view-frame"></div>
+	</div>
+</div>
+
+</body>
+</html>

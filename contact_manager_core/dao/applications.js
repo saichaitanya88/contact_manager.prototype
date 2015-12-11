@@ -12,6 +12,7 @@ function ApplicationDataAccess () {
     logger.log("ApplicationDataAccess.GetAccount", appModes.DEBUG)
     // Open the connection to the server
     MongoClient.connect(appConfig.mongoDbConnection, {native_parser:true}, function(err, db) {
+      logger.log(appConfig.mongoDbConnection, appModes.DEBUG)
       // Get the first db and do an update document on it
       var accountsCollection = db.collection('applications');
       
