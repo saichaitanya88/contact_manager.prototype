@@ -137,7 +137,7 @@ contactManagerControllers.controller('CustomObjectModelDefinitionCtrl', ['$scope
     }
     $scope.CreateDefinition = function() {
       CustomObjectModelDefinition.Create($scope.customObjectModelDefinition, $scope.AppHelper.GetAuthParams(), function(data, status) {
-        $location.path("/application/account/" + $scope.AppHelper.GetAuthParams().accountId + "/customObject/" + GetAuthParams().customObjectId + "/modelDefinition/" + customObjectModelDefinitionId);
+        $location.path("/application/account/" + $scope.AppHelper.GetAuthParams().accountId + "/customObject/" + scope.AppHelper.GetAuthParams().customObjectId + "/modelDefinition/" + customObjectModelDefinitionId);
       }, function(data, status) {
         $scope.errorResponse = JSON.stringify(data, null, 2);
       });
