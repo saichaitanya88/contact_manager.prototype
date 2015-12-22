@@ -68,8 +68,8 @@ contactManagerControllers.controller('CustomObjectsCtrl', ['$scope', '$http', '$
       });
     }
     $scope.CreateCustomObject = function() {
-      CustomObject.Create($scope.customObject, scope.AppHelper.GetAuthParams(), function(data, status) {
-        $location.path("/application/account/" + scope.AppHelper.GetAuthParams().accountId + "/customObject/" + data.customObject.data._id);
+      CustomObject.Create($scope.customObject, $scope.AppHelper.GetAuthParams(), function(data, status) {
+        $location.path("/application/account/" + $scope.AppHelper.GetAuthParams().accountId + "/customObject/" + data.customObject.data._id);
       }, function(data, status) {
         $scope.errorResponse = JSON.stringify(data, null, 2);
       });
