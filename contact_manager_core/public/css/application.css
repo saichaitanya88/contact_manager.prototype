@@ -1,0 +1,147 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require bootstrap.min
+ *= require_tree .
+ *= require_self
+ */
+
+
+/**
+
+Colour Scheme: http://www.colourlovers.com/palette/41095/leatherbound
+	Text - 951F2B
+	Darkest to Lightest
+	535233
+	A5A36C
+	E0DFB1
+	F5F4D7
+**/
+
+
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url('../assets/glyphicons-halflings-regular.eot');
+  src: url('../assets/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), 
+       url('../assets/glyphicons-halflings-regular.woff') format('woff'), 
+       url('../assets/glyphicons-halflings-regular.ttf') format('truetype'), 
+       url('../assets/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+
+h1, h2, h3, h4, h5, h6 { text-align: center; }
+
+.btn {
+    border-radius: 0px;
+    background-color: #A5A36C;
+}
+
+.btn-default.active, 
+.btn-default.focus, 
+.btn-default:active, 
+.btn-default:focus, 
+.btn-default:hover, 
+.open > .dropdown-toggle.btn-default{
+	background-color: #535233;
+}
+
+.navbar{
+	border-radius: 0px;
+}
+.navbar-default{
+  background-color: #535233;
+  border-color: #535233;
+}
+
+.navbar-default .navbar-brand{
+	color: #F5F4D7;
+}
+.navbar-default .navbar-nav > li > a{
+	color: #F5F4D7;	
+}
+
+.navbar-default .navbar-brand:active,
+.navbar-default .navbar-brand:focus,
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-nav > li > a:active,
+.navbar-default .navbar-nav > li > a:focus,
+.navbar-default .navbar-nav > li > a:hover{
+	color: #E0DFB1;
+}
+
+.btn-default.disabled, 
+.btn-default.disabled.active, 
+.btn-default.disabled.focus, 
+.btn-default.disabled:active, 
+.btn-default.disabled:focus, 
+.btn-default.disabled:hover, 
+.btn-default[disabled], 
+.btn-default.active[disabled], 
+.btn-default.focus[disabled], 
+.btn-default[disabled]:active, 
+.btn-default[disabled]:focus, 
+.btn-default[disabled]:hover, 
+fieldset[disabled] .btn-default, 
+fieldset[disabled] .btn-default.active, 
+fieldset[disabled] .btn-default.focus, 
+fieldset[disabled] .btn-default:active, 
+fieldset[disabled] .btn-default:focus, 
+fieldset[disabled] .btn-default:hover{
+	background-color: #F5F4D7;
+	border-color: #E0DFB1;
+}
+
+body {
+	color: #951F2B;
+	background-color: #E0DFB1;
+}
+
+.form-control:focus {
+    border-color: #A5A36C;
+    outline: 0px none;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 8px rgba(149,31,43, 0.6);
+  }
+
+
+a:link,
+a:visited,
+a:hover,
+a:active{
+	color: #535233;
+  text-decoration: underline;
+}
+
+a {
+  color: #535233;
+  text-decoration: none;
+}
+
+/* Non-Bootstrap */
+.view-body { margin-top:10px; }
+
+.search-item { border:2px solid #535233; margin: 10px;}
+
+.search-heading { background-color: #A5A36C; }
+
+.search-heading > h3 {
+	margin:0px;color:#951F2B;
+}
+
+.debug {
+	color: white;	
+	background-color: black;
+	margin-bottom:50px;
+	margin-top:50px;
+}
+
+.align-with-label {
+	padding-top:6px;
+}

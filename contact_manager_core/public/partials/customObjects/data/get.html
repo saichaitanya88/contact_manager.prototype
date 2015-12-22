@@ -1,0 +1,21 @@
+<div ng-if="AppHelper.IsDebugMode()">partials/customObjects/data/get.html</div>
+
+<div class='row'>
+	<form novalidate class="form-horizontal" name="form" >
+    <div class="form-group" ng-repeat='key in customObjectDataKeys'>
+      <label for="name" class="col-sm-2 control-label">{{key.name}}</label>
+      <div class="col-sm-10">
+      	<input class="form-control" name="customObjectData['{{key.fieldName}}']" ng-model="customObjectData[key.fieldName]" type='{{FieldType(key)}}'>
+      </div>
+    </div>
+    <hr />
+  	<div class="form-group">
+  		<div class="col-sm-offset-2 col-sm-10">
+  			<button type="button" class="btn btn-default" ng-disabled='!form.$valid' ng-click="Update()"><span ng-class="form.$dirty ? 'glyphicon glyphicon-floppy-disk' : 'glyphicon glyphicon-floppy-saved'"></span></button>
+        <button type="button" class="btn btn-default" ng-click="Delete()"><span class="glyphicon glyphicon-trash"></span></button>
+  		</div>
+  	</div>
+  </form>
+</div>
+
+<div ng-include="'/partials/debug/scope-params.html'"></div>

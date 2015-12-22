@@ -1,0 +1,93 @@
+<div ng-if="AppHelper.IsDebugMode()">partials/customObjects/data/search.html</div>
+
+<div class='row'>
+	<form novalidate class="form-horizontal" name="form" >
+    <div class="form-group" ng-repeat='field in customObject.modelDefinition'>
+      <label for="name" class="col-sm-2 control-label">{{field.name}}</label>
+      <div class="col-sm-10" ng-switch on="field.type">
+      	<div ng-switch-when="Date">
+      		<div class='row'>
+		    		<div class="col-sm-6">
+		    			<div class="input-group">
+		    				<span class="input-group-addon">Start</span>
+		            <input type="date" class="form-control" datepicker-popup ng-model="field.value_start" is-open="AppHelper.DatePicker.Opened[field.$$hashKey + 's']" datepicker-options="AppHelper.DatePicker.Options" date-disabled="" close-text="Close" />
+		            <span class="input-group-btn">
+		              <button type="button" class="btn btn-default" ng-click="AppHelper.DatePicker.Open($event, field.$$hashKey + 's')"><i class="glyphicon glyphicon-calendar"></i>
+		              </button>
+	            	</span>
+		          </div>
+		    		</div>
+		    		<div class="col-sm-6">
+		    			<div class="input-group">
+			    			<span class="input-group-addon">End</span>
+		            <input type="date" class="form-control" datepicker-popup ng-model="field.value_end" is-open="AppHelper.DatePicker.Opened[field.$$hashKey + 'e']" datepicker-options="AppHelper.DatePicker.Options" date-disabled="" close-text="Close" />
+		            <span class="input-group-btn">
+		              <button type="button" class="btn btn-default" ng-click="AppHelper.DatePicker.Open($event, field.$$hashKey + 'e')"><i class="glyphicon glyphicon-calendar"></i>
+		              </button>
+	            	</span>
+		    			</div>
+						</div>
+					</div>
+				</div>
+      	<div ng-switch-when="String">
+					<input class="form-control" type='text' ng-model='field.value' />
+				</div>
+				<div ng-switch-when="ObjectId">
+					<input class="form-control" type='text' ng-model='field.value' />
+				</div>
+				<div ng-switch-when="Boolean">
+					<div class="pull-left">
+						<input class="form-control" type='checkbox' ng-model='field.value' />
+					</div>
+				</div>
+				<div ng-switch-when="Number">
+					<div class='row'>
+		    		<div class="col-sm-6">
+		    			<div class="input-group">
+		    				<span class="input-group-addon">Min</span>
+		            <input type="number" class="form-control" ng-model="field.value_start" />
+		          </div>
+		    		</div>
+		    		<div class="col-sm-6">
+		    			<div class="input-group">
+			    			<span class="input-group-addon">Max</span>
+		            <input type="number" class="form-control" ng-model="field.value_end" />
+		    			</div>
+						</div>
+					</div>
+				</div>
+      </div>
+    </div>
+  	<div class="form-group">
+  		<div class="col-sm-offset-2 col-sm-10">
+  			<button type="button" class="btn btn-default" ng-disabled='!form.$valid' ng-click="Search()"><span class="glyphicon glyphicon-search"></span></button>
+  		</div>
+  	</div>
+  </form>
+</div>
+<br/><br/><br/>
+DATA ARRAY:
+<br/><br/><br/>
+<table class="table">
+	<thead>
+		<tr>
+			<th ng-repeat="def in customObject.modelDefinition" ng-show="def.scope != 'System'">
+				{{def.name}}
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat='data in customObjectData.customObjectData'>
+			<td ng-repeat="def in customObject.modelDefinition" ng-show="def.scope != 'System'">
+				{{ data[def.fieldName]}}
+			</td>
+			<td>
+				<a class="btn btn-default" href="{{CustomObjectDataUrl(data)}}"><span class="glyphicon glyphicon-pencil"></span></a>
+				<button class="btn btn-default" ng-click="QuickDeleteCustomObjectData(data._id)"><span class="glyphicon glyphicon-trash"></span></button>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<div ng-include="'/partials/debug/scope-params.html'"></div>

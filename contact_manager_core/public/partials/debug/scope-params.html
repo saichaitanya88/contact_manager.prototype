@@ -1,0 +1,16 @@
+<div class="col-md-offset-1 debug" ng-if="AppHelper.IsDebugMode()">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Parameter</th>
+        <th>Value (json) {{AppHelper.IsDebugMode()}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="info in AppHelper.DebugInfoList(this.$parent)">
+        <td>{{info.param}}</td>
+        <td>{{info.value | json}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

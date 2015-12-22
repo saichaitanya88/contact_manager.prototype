@@ -11,7 +11,9 @@ module.exports = exports = function(app) {
   var accountsAPI = new AccountsAPI();
   var customObjectsAPI = new CustomObjectsAPI();
   var customObjectDataAPI = new CustomObjectDataAPI();
+  
   // Account Actions
+  app.get('/', accountsAPI.GetHomePage);
   app.post('/application/account', accountsAPI.CreateAccount);
   app.post('/application/account/signin', accountsAPI.SignInToAccount);
   app.get('/application/account/:accountId', accountsAPI.GetAccount);

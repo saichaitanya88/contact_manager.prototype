@@ -1,0 +1,48 @@
+<div ng-if="AppHelper.IsDebugMode()">partials/customObjects/modelDefinitions/get.html</div>
+
+<form novalidate class="form-horizontal" name="form">
+  <div class="form-group">
+    <label for="name" class="col-sm-2 control-label">Name</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" required ng-disabled='FieldDisabled()' name="name" ng-model="customObjectModelDefinition.name">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="description" class="col-sm-2 control-label">Description</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" name="description" ng-model="customObjectModelDefinition.description">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="type" class="col-sm-2 control-label">Data Type</label>
+    <div class="col-sm-10">
+    	<select class='form-control' ng-model="customObjectModelDefinition.type" ng-disabled="DataTypeDisabled()" ng-options="type as type for type in ValidDataTypes"></select>
+    </div>
+  </div>
+  <div class="form-group" ng-show='customObjectModelDefinition.fieldName'>
+    <label for="Date Type" class="col-sm-2 control-label">System Name</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" name="description" readonly ng-model="customObjectModelDefinition.fieldName">
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="button" class="btn btn-default" ng-click="UpdateDefinition()"><span ng-class="!form.$pristine ? 'glyphicon glyphicon-floppy-disk' : 'glyphicon glyphicon-floppy-saved'"></span></button>
+      <button type="button" class="btn btn-default" ng-click="RemoveDefinition()"><span class="glyphicon glyphicon-trash"></span></button>
+    </div>
+  </div>
+  <div class="form-group">
+    <small class="col-sm-10 col-sm-offset-2">
+      <span>Created At: {{customObjectModelDefinition.createdAt}}</span>
+      <span>Updated At: {{customObjectModelDefinition.updatedAt}}</span>
+      <span>Created By: {{customObjectModelDefinition.createdBy}}</span>
+      <span>Updated By: {{customObjectModelDefinition.updatedBy}}</span>
+    </small>
+  </div>
+</form>
+<div class="col-md-offset-1">
+	<div ng-show="errorResponse">{{ errorResponse }}</div>
+	<div ng-show="successResponse">{{ successResponse }}</div>
+</div>
+
+<div ng-include="'/partials/debug/scope-params.html'"></div>

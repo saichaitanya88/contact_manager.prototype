@@ -20,7 +20,10 @@ function AccountsAPI () {
   "responseCodes: {400, 201, 500}"+
   "process: {validateApp , read, validate(AccountModel), createAccount, returnResponse(success,error)}";
 */
-
+  this.GetHomePage  = function(req,res){
+    logger.log("API.GetHomePage", appModes.DEBUG);
+    res.sendfile('views/index.html');
+  };
   this.CreateAccount = function CreateAccount(req,res){
     logger.log("AccountsAPI.CreateAccount", appModes.DEBUG);
     var authenticationAPI = new AuthenticationAPI();

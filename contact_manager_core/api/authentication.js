@@ -23,7 +23,7 @@ function AuthenticationAPI () {
     var token = '';
     // Lazy, but don't care since this should be OAuth
     try{
-      var authorization = req.headers["authorization"].split("Basic ")[1].toString();
+      var authorization = req.headers["authentication"].split("Basic ")[1].toString();
       key = new Buffer(authorization, 'base64').toString('ascii').split(":")[0];
       token = new Buffer(authorization, 'base64').toString('ascii').split(":")[1];
     }
@@ -44,7 +44,7 @@ function AuthenticationAPI () {
   this.AuthenticateAccount = function AuthenticateAccount(req,res, errorCallback, successCallback){
   	logger.log("AuthenticationAPI.AuthenticateAccount", appModes.DEBUG);
     var accountId = new ObjectId(req.params.accountId);
-    var sessionToken = req.headers["session-token"];
+    var sessionToken = req.headers["sessiontoken"];
     var sessionsDAO = new SessionsDataAccess();
     sessionsDAO.GetUserBySessionToken({"token" : sessionToken}, GetSessionFailed, GetSessionSuccess);
     function GetSessionFailed(){

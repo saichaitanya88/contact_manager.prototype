@@ -17,7 +17,7 @@ var appModes = new ApplicationModes();
 app.engine('html', cons.swig);
 app.set('view engine', 'html');
 app.use(bodyParser.json());
-
+app.use(express.static('public'));
 /* Initialize Application Core */
 //var appConfig = new AppConfig();
 // var appCore = new AppCore(appConfig);

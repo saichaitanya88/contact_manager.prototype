@@ -1,0 +1,33 @@
+<div ng-if="AppHelper.IsDebugMode()">partials/customObjects/data/new.html</div>
+
+<div class='row'>
+	<form novalidate class="form-horizontal" name="form" >
+    <div class="form-group" ng-repeat='field in customObject.modelDefinition' ng-hide='field.scope == "System"'>
+      <label for="name" class="col-sm-2 control-label">{{field.name}}</label>
+      <div class="col-sm-10">
+        <span ng-switch on="FieldType(field)">
+          <div ng-switch-when="checkbox">
+            <div class="pull-left">
+              <input class="form-control" type='checkbox' ng-model='field.value' />
+            </div>
+          </div>
+          <div class="input-group" ng-switch-when='date'>
+            <input type="date" class="form-control" datepicker-popup ng-model="field.value" is-open="AppHelper.DatePicker.Opened[field.$$hashKey]" datepicker-options="AppHelper.DatePicker.Options" date-disabled="" close-text="Close" />
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" ng-click="AppHelper.DatePicker.Open($event, field.$$hashKey)"><i class="glyphicon glyphicon-calendar"></i></button>
+            </span>
+          </div>
+          <input ng-switch-default class="form-control" ng-model="field.value" ng-init='field.value = null' type='{{FieldType(field)}}'>
+        </span>
+      </div>
+    </div>
+    <hr />
+  	<div class="form-group">
+  		<div class="col-sm-offset-2 col-sm-10">
+  			<button type="button" class="btn btn-default" ng-disabled='!form.$valid' ng-click="Create()"><span ng-class="form.$dirty ? 'glyphicon glyphicon-floppy-disk' : 'glyphicon glyphicon-floppy-saved'"></span></button>
+  		</div>
+  	</div>
+  </form>
+</div>
+
+<div ng-include="'/partials/debug/scope-params.html'"></div>
