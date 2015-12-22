@@ -347,7 +347,9 @@ contactManagerControllers.controller('MiscCtrl', ['$scope', '$http', "AppHelper"
 		$location.path($scope.BaseUrl);
   }
   $scope.$root.$on( "$routeChangeStart", function(event, next, current) {
-    window.document.title = next.$$route.title;
+    if (next.$$route){
+      window.document.title = next.$$route.title;
+    }
     $scope.Authenticate();
   })
   $scope.$on("$stateChangeSuccess", $scope.Authenticate());
