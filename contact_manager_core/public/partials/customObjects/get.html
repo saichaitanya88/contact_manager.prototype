@@ -71,10 +71,9 @@
   	</div>
   	<div class="form-group">
   		<div class="col-sm-offset-2 col-sm-10">
-  			<a type="button" class="btn-default btn" ng-href="#/application/account/{{AuthParams.accountId}}/customObject/{{customObject._id}}/modelDefinition"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span></a>
+  			<a type="button" class="btn-default btn" ng-href="#/application/account/{{AppHelper.GetAuthParams().accountId}}/customObject/{{customObject._id}}/modelDefinition"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span></a>
   		</div>
   	</div>
   </form>
 </div>
-
 <div ng-include="'/partials/debug/scope-params.html'"></div>
